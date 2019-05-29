@@ -1,0 +1,47 @@
+*~
+.DS_Store
+*.cer
+*.mobileprovision
+# Criado por https://www.gitignore.io
+
+### Swift ###
+# Xcode
+#
+construir /
+* .pbxuser
+! Default.pbxuser
+* .mode1v3
+! Default.mode1v3
+* .mode2v3
+! Default.mode2v3
+* .perspectivev3
+! Default.perspectivev3
+xcuserdata
+* .xccheckout
+* .moved-Aside
+DerivedData
+* .hmap
+*.ipa
+* .xcuserstate
+*.zip
+*.lock
+
+# CocoaPods
+#
+# Recomendamos contra adicionar o diretório Pods à sua .gitignore. Porém
+# Você deve julgar por si mesmo, os prós e contras são mencionados em:
+# http://guides.cocoapods.org/using/using-cocoapods.html#should-i-ignore-the-pods-directory-in-source-control
+#
+Pods/
+
+# fastlane specific
+fastlane/report.xml
+
+# deliver temporary files
+fastlane/Preview.html
+
+# snapshot generated screenshots
+fastlane/screenshots
+
+# scan temporary files
+fastlane/test_output

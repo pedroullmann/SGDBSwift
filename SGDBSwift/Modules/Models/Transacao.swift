@@ -1,0 +1,49 @@
+//
+//  Transacao.swift
+//  SGDBSwift
+//
+//  Created by Pedro Ullmann on 5/20/19.
+//  Copyright © 2019 Pedro Ullmann. All rights reserved.
+//
+
+import Foundation
+
+enum EstadoTransacao: Int, Codable {
+    case ativa = 0
+    case commit
+    case rollback
+}
+
+class Transacao: Codable, Equatable {
+    static func == (lhs: Transacao, rhs: Transacao) -> Bool {
+        return lhs.id == rhs.id
+    }
+    
+    var id: Int
+    var nome: String
+    var visao: [Ferramenta]
+    var transacao_estado: EstadoTransacao
+    
+    init(id: Int, nome: String, visao: [Ferramenta], transacao_estado: EstadoTransacao) {
+        self.id = id
+        self.nome = nome
+        self.visao = visao
+        self.transacao_estado = transacao_estado
+    }
+    
+    private enum CodingKeys: String, CodingKey {
+        case id
+        case nome
+        case visao
+        case transacao_estado
+    }
+    
+    required init(from decoder: Decoder) throws {
+        let values = try decoder.container(keyedBy: CodingKeys.self)
+
+        id = try values.decode(Int.self, forKey: .id)
+        nome = try values.decode(String.self, forKey: .nome)
+        visao = try values.decode([Ferramenta].self, forKey: .visao)
+        transacao_estado = try values.decode(EstadoTransacao.self, forKey: .transacao_estado)
+    }
+}
