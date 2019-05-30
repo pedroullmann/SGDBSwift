@@ -18,6 +18,7 @@ enum DefaultNetworkingMethod: String {
     case options = "OPTIONS"
     case get     = "GET"
     case post    = "POST"
+    case patch   = "PATCH"
     
     func getMethod() -> HTTPMethod {
         switch self {
@@ -27,6 +28,8 @@ enum DefaultNetworkingMethod: String {
             return HTTPMethod.get
         case .post:
             return HTTPMethod.post
+        case .patch:
+            return HTTPMethod.patch
         }
     }
 }
@@ -35,6 +38,7 @@ enum DefaultEncoding {
     case `default`
     case queryString
     case json
+    case jsonPretty
     func getEncoding() -> ParameterEncoding {
         switch self {
         case .default:
@@ -43,6 +47,8 @@ enum DefaultEncoding {
             return URLEncoding.queryString
         case .json:
             return JSONEncoding.default
+        case .jsonPretty:
+            return JSONEncoding.prettyPrinted
         }
     }
 }

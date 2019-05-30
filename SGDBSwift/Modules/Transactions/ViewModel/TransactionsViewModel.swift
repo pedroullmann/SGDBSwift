@@ -35,16 +35,26 @@ class TransactionsViewModel {
     }
     
     func reloadTransactionCell(_ transaction: Transacao, _ indexPath: IndexPath) {
-        let transcatioNCellViewModel = TransactionCellViewModel(transaction: transaction)
-        dataProvider.value.editingStyle = .reload(transcatioNCellViewModel, indexPath)
+        worker.modifyTransaction(trasaction: transaction) { [weak self] result in
+            guard let strongSelf = self else { return }
+            DispatchQueue.main.async {
+                switch result {
+                case .success:
+                    let transcatioNCellViewModel = TransactionCellViewModel(transaction: transaction)
+                    strongSelf.dataProvider.value.editingStyle = .reload(transcatioNCellViewModel, indexPath)
+                case .error:
+                    break
+                }
+            }
+        }
     }
 }
 
 extension TransactionsViewModel: TableViewViewModelProtocol {
     func fetch() {
         worker.getTransactions { [weak self] result in
+            guard let strongSelf = self else { return }
             DispatchQueue.main.async {
-                guard let strongSelf = self else { return }
                 switch result {
                 case .success(let transactions):
                     let orderedTransactions = transactions.sorted(by: { $0.id < $1.id })
@@ -61,9 +71,9 @@ extension TransactionsViewModel: TableViewViewModelProtocol {
     func createTransaction() {
         elementsCount += 1
         buttonEnabled.value = false
-        worker.createTransaction(ferramentas: ferramentas) { [weak self] result in
+        worker.createTransaction { [weak self] result in
+            guard let strongSelf = self else { return }
             DispatchQueue.main.async {
-                guard let strongSelf = self else { return }
                 switch result {
                 case .success(let transaction):
                     let indexPath = IndexPath(row: strongSelf.elementsCount - 1, section: 0)
