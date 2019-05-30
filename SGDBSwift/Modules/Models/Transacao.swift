@@ -12,6 +12,19 @@ enum EstadoTransacao: Int, Codable {
     case ativa = 0
     case commit
     case rollback
+    
+    init(from decoder: Decoder) throws {
+        let id = try decoder.singleValueContainer().decode(Int.self)
+        if let novoEstado = EstadoTransacao(rawValue: id) {
+            self = novoEstado
+        } else {
+            self = .ativa
+        }
+    }
+    
+    init(fromRawValue: Int) {
+        self = EstadoTransacao(rawValue: fromRawValue) ?? .ativa
+    }
 }
 
 class Transacao: Codable, Equatable {
@@ -44,6 +57,19 @@ class Transacao: Codable, Equatable {
         id = try values.decode(Int.self, forKey: .id)
         nome = try values.decode(String.self, forKey: .nome)
         visao = try values.decode([Ferramenta].self, forKey: .visao)
-        transacao_estado = try values.decode(EstadoTransacao.self, forKey: .transacao_estado)
+        
+        if let unEstado = try? values.decode(Int.self, forKey: .transacao_estado) {
+            transacao_estado = EstadoTransacao(fromRawValue: unEstado)
+        } else {
+            transacao_estado = .ativa
+        }
+    }
+    
+    func encode(to encoder: Encoder) throws {
+        var container = encoder.container(keyedBy: CodingKeys.self)
+        try container.encode(id, forKey: .id)
+        try container.encode(nome, forKey: .nome)
+        try container.encode(visao, forKey: .visao)
+        try container.encode(transacao_estado, forKey: .transacao_estado)
     }
 }

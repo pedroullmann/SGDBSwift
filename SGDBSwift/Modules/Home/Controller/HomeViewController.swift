@@ -15,6 +15,7 @@ class HomeViewController: UIViewController {
     
     //MARK :- Properties
     private let headerCellIdentifier = "headerCell"
+    private let headerCellHeight: CGFloat = 45
     private let goToTransacoesIdentifier = "goToTransacoes"
     private let toolsCellIdentifier = "toolsCell"
     private let homeWorker: HomeWorker = HomeWorker()
@@ -117,7 +118,11 @@ extension HomeViewController: UITableViewDelegate {
         guard let headerCell = tableView.dequeueReusableCell(withIdentifier: headerCellIdentifier) else {
             return UIView()
         }
-        return headerCell
+        return headerCell.contentView
+    }
+    
+    func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
+        return headerCellHeight
     }
     
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {

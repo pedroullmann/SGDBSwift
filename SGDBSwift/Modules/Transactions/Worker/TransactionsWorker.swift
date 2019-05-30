@@ -66,16 +66,17 @@ class TransactionsWorker: TransactionsWorkerProtocol {
     }
     
     func modifyTransaction(trasaction: Transacao, completion: @escaping (Result<Bool>) -> ()) {
-        let parameters: [String : Any] = [
-            "id": trasaction.id,
-            "nome": trasaction.nome,
-            "visao": trasaction.visao,
-            "transacao_estado": trasaction.transacao_estado
-        ]
+        guard let trasactionJSON = try? JSONEncoder().encode(trasaction) else {
+            completion(Result.success(false))
+            return
+        }
+        
+        var parameters: [String : Any] = [:]
+        parameters["transaction"] = String(data: trasactionJSON, encoding: .utf8)
         
         defaultNetworking.request("transacoes/\(trasaction.id)",
                                   method: .patch,
-                                  encoding: .json,
+                                  encoding: .jsonPretty,
                                   parameters: parameters) { result in
             switch result {
             case .success:

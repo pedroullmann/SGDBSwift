@@ -17,6 +17,7 @@ class DetailViewController: UIViewController {
     //MARK :- Properties
     private let headerCellIdentifier = "headerCell"
     private let toolsCellIdentifier = "toolsCell"
+    private let headerCellHeight: CGFloat = 45
     private let detailWorker: DetailWorker = DetailWorker()
     private var toolIndexPath: IndexPath?
     private var toolModel: Ferramenta?
@@ -92,6 +93,8 @@ class DetailViewController: UIViewController {
     
     private func cleanComponents() {
         descricao.text = ""
+        toolIndexPath = nil
+        toolModel = nil
     }
     
     //MARK :- Actions
@@ -114,21 +117,18 @@ class DetailViewController: UIViewController {
         if !removedSpaces.isEmpty {
             viewModel.reloadToolCell(unIndexPath, ferramenta: unTool, descricao: unDescricao)
             cleanComponents()
-            toolIndexPath = nil
-            toolModel = nil
         }
     }
     
     @IBAction func remover(_ sender: Any) {
         //TODO: Salvar o remover no log
-        guard let unIndexPath = toolIndexPath else { return }
+        guard let unIndexPath = toolIndexPath, toolModel != nil else { return }
         viewModel.removeToolCell(unIndexPath)
         cleanComponents()
-        toolIndexPath = nil
     }
     
     @IBAction func commit(_ sender: Any) {
-        
+        //TODO: Salvar o commit no log
     }
     
     @IBAction func rollback(_ sender: Any) {
@@ -163,7 +163,11 @@ extension DetailViewController: UITableViewDelegate {
         guard let headerCell = tableView.dequeueReusableCell(withIdentifier: headerCellIdentifier) else {
             return UIView()
         }
-        return headerCell
+        return headerCell.contentView
+    }
+    
+    func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
+        return headerCellHeight
     }
 
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
