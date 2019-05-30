@@ -24,6 +24,7 @@ class DetailViewController: UIViewController {
     private var viewModel: DetailViewModel!
     public var transactionIndexPath: IndexPath?
     public var transacao: Transacao?
+    public var transactionChanged = false
     public var transactionsDelegate: TransactionsProtocol?
     
     //MARK :- Lifecycle
@@ -71,6 +72,16 @@ class DetailViewController: UIViewController {
                 }
             }
         }
+        
+        viewModel.transacao.bind { [weak self] transacao in
+            guard let strongSelf = self else { return }
+            strongSelf.transacao = transacao
+        }
+        
+        viewModel.transactionChanged.bind { [weak self] wasChanged in
+            guard let strongSelf = self else { return }
+            strongSelf.transactionChanged = wasChanged
+        }
     }
     
     private func configNavigation() {
@@ -95,6 +106,14 @@ class DetailViewController: UIViewController {
         descricao.text = ""
         toolIndexPath = nil
         toolModel = nil
+    }
+    
+    override func didMove(toParent parent: UIViewController?) {
+        guard let unTransactionIndexPath = transactionIndexPath,
+            let unDelegate = transactionsDelegate,
+            let unTransaction = transacao,
+            transactionChanged else { return }
+        unDelegate.goBack(unTransactionIndexPath, unTransaction)
     }
     
     //MARK :- Actions
@@ -133,8 +152,9 @@ class DetailViewController: UIViewController {
     
     @IBAction func rollback(_ sender: Any) {
         //TODO: Salvar o rollback no log
-        guard let unTransactionIndexPath = transactionIndexPath, let unDelegate = transactionsDelegate else { return }
-        unDelegate.wasRollback(unTransactionIndexPath)
+        guard let unTransaction = transacao else { return }
+        unTransaction.transacao_estado = .rollback
+        transactionChanged = true
         _ = navigationController?.popViewController(animated: true)
     }
 }

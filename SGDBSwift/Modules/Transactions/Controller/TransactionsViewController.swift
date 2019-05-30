@@ -9,7 +9,7 @@
 import UIKit
 
 protocol TransactionsProtocol: class {
-    func wasRollback(_ indexPath: IndexPath)
+    func goBack(_ indexPath: IndexPath, _ transaction: Transacao)
 }
 
 class TransactionsViewController: UIViewController {
@@ -149,13 +149,10 @@ extension TransactionsViewController: UITableViewDelegate {
 
 //MARK :- TransactionsProtocol
 extension TransactionsViewController: TransactionsProtocol {
-    func wasRollback(_ indexPath: IndexPath) {
+    func goBack(_ indexPath: IndexPath, _ transaction: Transacao) {
         let cellViewModel = viewModel[indexPath.section][indexPath.row]
         let transaction = cellViewModel.transaction
-        let editedTransaction = Transacao(id: transaction.id,
-                                          nome: transaction.nome,
-                                          visao: transaction.visao,
-                                          transacao_estado: .rollback)
+        let editedTransaction = transaction
         
         viewModel.reloadTransactionCell(editedTransaction, indexPath)
     }
