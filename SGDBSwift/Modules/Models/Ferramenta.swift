@@ -24,11 +24,10 @@ class Ferramenta: Codable, Equatable {
     var bloqueio: Bloqueio?
     var transacao: Int?
     
-    init(id: Int, descricao: String, bloqueio: Bloqueio?, transacao: Int?) {
+    init(id: Int, descricao: String, bloqueio: Bloqueio?) {
         self.id = id
         self.descricao = descricao
         self.bloqueio = bloqueio
-        self.transacao = transacao
     }
     
     private enum CodingKeys: String, CodingKey {

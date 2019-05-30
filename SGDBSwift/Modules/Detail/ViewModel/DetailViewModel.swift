@@ -31,6 +31,29 @@ class DetailViewModel {
         
         return result
     }
+    
+    func insertToolCell(_ descricao: String) {
+        var toolId: Int = 1
+        if let inIndexRange = dataProvider.value.elements[safe: 0], let lastElement = inIndexRange.last {
+            toolId = lastElement.tool.id + 1
+        }
+        elementsCount += 1
+        let tool = Ferramenta(id: toolId, descricao: descricao, bloqueio: .desbloqueado)
+        let toolCellViewModel = ToolsCellViewModel(tool: tool)
+        let indexPath = IndexPath(row: elementsCount - 1, section: 0)
+        dataProvider.value.editingStyle = .insert([toolCellViewModel], [indexPath], false)
+    }
+    
+    func reloadToolCell(_ indexPath: IndexPath, ferramenta: Ferramenta, descricao: String) {
+        let tool = Ferramenta(id: ferramenta.id, descricao: descricao, bloqueio: .desbloqueado)
+        let toolCellViewModel = ToolsCellViewModel(tool: tool)
+        dataProvider.value.editingStyle = .reload(toolCellViewModel, indexPath)
+    }
+    
+    func removeToolCell(_ indexPath: IndexPath) {
+        elementsCount -= 1
+        dataProvider.value.editingStyle = .delete([], [indexPath], false)
+    }
 }
 
 extension DetailViewModel: TableViewViewModelProtocol {

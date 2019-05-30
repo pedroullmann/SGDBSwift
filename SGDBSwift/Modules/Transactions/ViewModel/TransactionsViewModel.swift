@@ -33,6 +33,11 @@ class TransactionsViewModel {
         
         return result
     }
+    
+    func reloadTransactionCell(_ transaction: Transacao, _ indexPath: IndexPath) {
+        let transcatioNCellViewModel = TransactionCellViewModel(transaction: transaction)
+        dataProvider.value.editingStyle = .reload(transcatioNCellViewModel, indexPath)
+    }
 }
 
 extension TransactionsViewModel: TableViewViewModelProtocol {

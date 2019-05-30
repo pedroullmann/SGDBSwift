@@ -12,16 +12,18 @@ class DetailViewController: UIViewController {
     
     //MARK :- Outlets
     @IBOutlet weak var tableView: UITableView!
-    @IBOutlet weak var codigo: UITextField!
     @IBOutlet weak var descricao: UITextField!
     
     //MARK :- Properties
     private let headerCellIdentifier = "headerCell"
-    private let cellHeight: CGFloat = 40
     private let toolsCellIdentifier = "toolsCell"
     private let detailWorker: DetailWorker = DetailWorker()
+    private var toolIndexPath: IndexPath?
+    private var toolModel: Ferramenta?
     private var viewModel: DetailViewModel!
+    public var transactionIndexPath: IndexPath?
     public var transacao: Transacao?
+    public var transactionsDelegate: TransactionsProtocol?
     
     //MARK :- Lifecycle
     override func viewDidLoad() {
@@ -80,6 +82,7 @@ class DetailViewController: UIViewController {
     private func configTableView() {
         tableView.dataSource = self
         tableView.delegate = self
+        tableView.estimatedRowHeight = 44
         tableView.tableFooterView = UIView(frame: .zero)
     }
     
@@ -87,17 +90,41 @@ class DetailViewController: UIViewController {
         viewModel.fetch()
     }
     
+    private func cleanComponents() {
+        descricao.text = ""
+    }
+    
     //MARK :- Actions
     @IBAction func inserir(_ sender: Any) {
+        //TODO: Salvar o inserir no log
+        guard let unDescricao = descricao.text else { return }
+        let removedSpaces = unDescricao.trimmingCharacters(in: .whitespaces)
         
+        if !removedSpaces.isEmpty {
+            viewModel.insertToolCell(unDescricao)
+            cleanComponents()
+        }
     }
     
     @IBAction func alterar(_ sender: Any) {
+        //TODO: Salvar o alterar no log
+        guard let unIndexPath = toolIndexPath, let unTool = toolModel, let unDescricao = descricao.text else { return }
+        let removedSpaces = unDescricao.trimmingCharacters(in: .whitespaces)
         
+        if !removedSpaces.isEmpty {
+            viewModel.reloadToolCell(unIndexPath, ferramenta: unTool, descricao: unDescricao)
+            cleanComponents()
+            toolIndexPath = nil
+            toolModel = nil
+        }
     }
     
     @IBAction func remover(_ sender: Any) {
-        
+        //TODO: Salvar o remover no log
+        guard let unIndexPath = toolIndexPath else { return }
+        viewModel.removeToolCell(unIndexPath)
+        cleanComponents()
+        toolIndexPath = nil
     }
     
     @IBAction func commit(_ sender: Any) {
@@ -105,7 +132,10 @@ class DetailViewController: UIViewController {
     }
     
     @IBAction func rollback(_ sender: Any) {
-        
+        //TODO: Salvar o rollback no log
+        guard let unTransactionIndexPath = transactionIndexPath, let unDelegate = transactionsDelegate else { return }
+        unDelegate.wasRollback(unTransactionIndexPath)
+        _ = navigationController?.popViewController(animated: true)
     }
 }
 
@@ -137,7 +167,14 @@ extension DetailViewController: UITableViewDelegate {
     }
 
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        return cellHeight
+        return UITableView.automaticDimension
+    }
+    
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        let cellViewModel = viewModel[indexPath.section][indexPath.row]
+        toolModel = cellViewModel.tool
+        toolIndexPath = indexPath
+        descricao.text = cellViewModel.tool.descricao
     }
 }
 

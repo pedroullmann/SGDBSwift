@@ -8,6 +8,10 @@
 
 import UIKit
 
+protocol TransactionsProtocol: class {
+    func wasRollback(_ indexPath: IndexPath)
+}
+
 class TransactionsViewController: UIViewController {
     
     //MARK :- Outlets
@@ -17,6 +21,7 @@ class TransactionsViewController: UIViewController {
     //MARK :- Properties
     private let transactionsWorker: TransactionsWorker = TransactionsWorker()
     private var viewModel: TransactionsViewModel!
+    private var transactionIndexPath: IndexPath?
     private let transactioCellHeight: CGFloat = 60
     private let transactionCellIdentifier = "transactionCell"
     private let detailSegueIdentifier = "goToDetail"
@@ -97,6 +102,11 @@ class TransactionsViewController: UIViewController {
             let vc = segue.destination as? DetailViewController,
             let transacao = sender as? Transacao {
             vc.transacao = transacao
+            
+            if let unIndexPath = transactionIndexPath {
+                vc.transactionIndexPath = unIndexPath
+                vc.transactionsDelegate = self
+            }
         }
     }
 }
@@ -129,6 +139,24 @@ extension TransactionsViewController: UITableViewDelegate {
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         let cellViewModel = viewModel[indexPath.section][indexPath.row]
         let transaction = cellViewModel.transaction
-        performSegue(withIdentifier: detailSegueIdentifier, sender: transaction)
+        
+        if transaction.transacao_estado == .ativa {
+            transactionIndexPath = indexPath
+            performSegue(withIdentifier: detailSegueIdentifier, sender: transaction)
+        }
+    }
+}
+
+//MARK :- TransactionsProtocol
+extension TransactionsViewController: TransactionsProtocol {
+    func wasRollback(_ indexPath: IndexPath) {
+        let cellViewModel = viewModel[indexPath.section][indexPath.row]
+        let transaction = cellViewModel.transaction
+        let editedTransaction = Transacao(id: transaction.id,
+                                          nome: transaction.nome,
+                                          visao: transaction.visao,
+                                          transacao_estado: .rollback)
+        
+        viewModel.reloadTransactionCell(editedTransaction, indexPath)
     }
 }

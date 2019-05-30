@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		84EB68B96079CCCB4C816D2F /* libPods-SGDBSwift.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 12F111D0844D88D89811514B /* libPods-SGDBSwift.a */; };
+		E726D8DF229F543B0056F961 /* Collection.swift in Sources */ = {isa = PBXBuildFile; fileRef = E726D8DE229F543B0056F961 /* Collection.swift */; };
 		E747580022935A2F00504F87 /* Transacao.swift in Sources */ = {isa = PBXBuildFile; fileRef = E74757FF22935A2F00504F87 /* Transacao.swift */; };
 		E747580822935C0900504F87 /* TransactionsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E747580722935C0900504F87 /* TransactionsViewController.swift */; };
 		E747580A22935C8000504F87 /* TransactionsWorker.swift in Sources */ = {isa = PBXBuildFile; fileRef = E747580922935C8000504F87 /* TransactionsWorker.swift */; };
@@ -38,6 +39,7 @@
 /* Begin PBXFileReference section */
 		12F111D0844D88D89811514B /* libPods-SGDBSwift.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-SGDBSwift.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		B72E9EFE6AB85DDBCC6FE587 /* Pods-SGDBSwift.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-SGDBSwift.debug.xcconfig"; path = "Target Support Files/Pods-SGDBSwift/Pods-SGDBSwift.debug.xcconfig"; sourceTree = "<group>"; };
+		E726D8DE229F543B0056F961 /* Collection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Collection.swift; sourceTree = "<group>"; };
 		E74757FF22935A2F00504F87 /* Transacao.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Transacao.swift; sourceTree = "<group>"; };
 		E747580722935C0900504F87 /* TransactionsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TransactionsViewController.swift; sourceTree = "<group>"; };
 		E747580922935C8000504F87 /* TransactionsWorker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TransactionsWorker.swift; sourceTree = "<group>"; };
@@ -95,6 +97,14 @@
 				12F111D0844D88D89811514B /* libPods-SGDBSwift.a */,
 			);
 			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		E726D8DD229F54260056F961 /* Extensions */ = {
+			isa = PBXGroup;
+			children = (
+				E726D8DE229F543B0056F961 /* Collection.swift */,
+			);
+			path = Extensions;
 			sourceTree = "<group>";
 		};
 		E747580222935B9F00504F87 /* Transactions */ = {
@@ -164,6 +174,7 @@
 			children = (
 				E74F881D2291CFB200A578D3 /* SupportFiles */,
 				E74F882D2291EB3500A578D3 /* Resources */,
+				E726D8DD229F54260056F961 /* Extensions */,
 				E74F881E2291D02E00A578D3 /* Modules */,
 			);
 			path = SGDBSwift;
@@ -427,6 +438,7 @@
 				E75D19A9229CA0400007FFEA /* DatabaseWorker.swift in Sources */,
 				E747580E22935CC800504F87 /* TransactionCellViewModel.swift in Sources */,
 				E788943F2294C72B00847F42 /* TransactionTableViewCell.swift in Sources */,
+				E726D8DF229F543B0056F961 /* Collection.swift in Sources */,
 				E7BA57302299DC98007C591C /* Networking.swift in Sources */,
 				E74F88372291ED4000A578D3 /* HomeWorker.swift in Sources */,
 				E747580822935C0900504F87 /* TransactionsViewController.swift in Sources */,

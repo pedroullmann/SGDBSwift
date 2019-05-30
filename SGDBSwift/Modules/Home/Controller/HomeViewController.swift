@@ -15,7 +15,6 @@ class HomeViewController: UIViewController {
     
     //MARK :- Properties
     private let headerCellIdentifier = "headerCell"
-    private let cellHeight: CGFloat = 40
     private let goToTransacoesIdentifier = "goToTransacoes"
     private let toolsCellIdentifier = "toolsCell"
     private let homeWorker: HomeWorker = HomeWorker()
@@ -72,6 +71,7 @@ class HomeViewController: UIViewController {
     private func configTableView() {
         tableView.dataSource = self
         tableView.delegate = self
+        tableView.estimatedRowHeight = 44
         tableView.tableFooterView = UIView(frame: .zero)
     }
     
@@ -121,7 +121,7 @@ extension HomeViewController: UITableViewDelegate {
     }
     
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        return cellHeight
+        return UITableView.automaticDimension
     }
 }
 

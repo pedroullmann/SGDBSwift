@@ -15,7 +15,6 @@ class DatabaseViewController: UIViewController {
     
     //MARK :- Properties
     private let headerCellIdentifier = "headerCell"
-    private let cellHeight: CGFloat = 40
     private let toolsCellIdentifier = "toolsCell"
     private let databaseWorker: DatabaseWorker = DatabaseWorker()
     private var viewModel: DatabaseViewModel!
@@ -60,6 +59,7 @@ class DatabaseViewController: UIViewController {
     private func configTableView() {
         tableView.dataSource = self
         tableView.delegate = self
+        tableView.estimatedRowHeight = 44
         tableView.tableFooterView = UIView(frame: .zero)
     }
     
@@ -96,7 +96,7 @@ extension DatabaseViewController: UITableViewDelegate {
     }
 
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        return cellHeight
+        return UITableView.automaticDimension
     }
 }
 
