@@ -16,13 +16,12 @@ class TransactionsViewController: UIViewController {
     
     //MARK :- Outlets
     @IBOutlet weak var tableView: UITableView!
-    @IBOutlet weak var barButton: UIBarButtonItem!
     
     //MARK :- Properties
     private let transactionsWorker: TransactionsWorker = TransactionsWorker()
     private var viewModel: TransactionsViewModel!
     private var transactionIndexPath: IndexPath?
-    private let transactioCellHeight: CGFloat = 60
+    private let transactioCellHeight: CGFloat = 130
     private let transactionCellIdentifier = "transactionCell"
     private let detailSegueIdentifier = "goToDetail"
     public var ferramentas: [Ferramenta] = []
@@ -74,12 +73,13 @@ class TransactionsViewController: UIViewController {
         
         viewModel.buttonEnabled.bind { [weak self] enabled in
             guard let strongSelf = self else { return }
-            strongSelf.barButton.isEnabled = enabled
+            strongSelf.navigationItem.rightBarButtonItem?.isEnabled = enabled
         }
     }
     
     private func configNavigation() {
         navigationItem.backBarButtonItem = UIBarButtonItem(title:"", style:.plain, target:nil, action:nil)
+        navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .add, target: self, action: #selector(criarTransacao))
     }
     
     private func configTableView() {
@@ -92,7 +92,7 @@ class TransactionsViewController: UIViewController {
         viewModel.fetch()
     }
     
-    @IBAction func criarTransacao(_ sender: Any) {
+    @objc func criarTransacao() {
         viewModel.createTransaction()
     }
     

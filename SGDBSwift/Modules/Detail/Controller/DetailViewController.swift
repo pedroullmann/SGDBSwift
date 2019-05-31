@@ -13,6 +13,7 @@ class DetailViewController: UIViewController {
     //MARK :- Outlets
     @IBOutlet weak var tableView: UITableView!
     @IBOutlet weak var descricao: UITextField!
+    @IBOutlet weak var container: UIView!
     
     //MARK :- Properties
     private let headerCellIdentifier = "headerCell"
@@ -96,6 +97,7 @@ class DetailViewController: UIViewController {
         tableView.delegate = self
         tableView.estimatedRowHeight = 44
         tableView.tableFooterView = UIView(frame: .zero)
+        container.addShadow()
     }
     
     @objc private func fetchData() {
