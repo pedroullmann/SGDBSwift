@@ -37,13 +37,20 @@ class Transacao: Codable, Equatable {
     var visao: [Ferramenta]
     var transacao_estado: EstadoTransacao
     var data: String
+    var rowSelected: Int?
     
-    init(id: Int, nome: String, visao: [Ferramenta], transacao_estado: EstadoTransacao, data: String) {
+    init(id: Int,
+         nome: String,
+         visao: [Ferramenta],
+         transacao_estado: EstadoTransacao,
+         data: String,
+         rowSelected: Int? = nil) {
         self.id = id
         self.nome = nome
         self.visao = visao
         self.transacao_estado = transacao_estado
         self.data = data
+        self.rowSelected = rowSelected
     }
     
     private enum CodingKeys: String, CodingKey {
@@ -52,6 +59,7 @@ class Transacao: Codable, Equatable {
         case visao
         case transacao_estado
         case data
+        case rowSelected
     }
     
     required init(from decoder: Decoder) throws {
@@ -62,6 +70,12 @@ class Transacao: Codable, Equatable {
         visao = try values.decode([Ferramenta].self, forKey: .visao)
         data = try values.decode(String.self, forKey: .data)
         
+        if let unRowSelected = try? values.decode(Int.self, forKey: .rowSelected) {
+            rowSelected = unRowSelected
+        } else {
+            rowSelected = nil
+        }
+
         if let unEstado = try? values.decode(Int.self, forKey: .transacao_estado) {
             transacao_estado = EstadoTransacao(fromRawValue: unEstado)
         } else {
@@ -75,6 +89,7 @@ class Transacao: Codable, Equatable {
         try container.encode(nome, forKey: .nome)
         try container.encode(visao, forKey: .visao)
         try container.encode(transacao_estado, forKey: .transacao_estado)
+        try container.encode(rowSelected, forKey: .rowSelected)
         try container.encode(data, forKey: .data)
     }
 }

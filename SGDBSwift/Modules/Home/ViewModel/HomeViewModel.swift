@@ -13,6 +13,7 @@ class HomeViewModel {
     var error: Dynamic<Error?>
     var elementsCount: Int
     var worker: HomeWorker
+    var elementsSection: Int
     var ferramentas: Dynamic<[Ferramenta]>
     
     init(worker: HomeWorker) {
@@ -21,6 +22,7 @@ class HomeViewModel {
         self.worker = worker
         self.error = Dynamic(nil)
         self.ferramentas = Dynamic([])
+        self.elementsSection = 0
     }
     
     func mapToToolsCellViewModel(_ ferramentas: [Ferramenta]) -> [ToolsCellViewModel] {
@@ -30,6 +32,16 @@ class HomeViewModel {
         }
         
         return result
+    }
+    
+    func toolWasChanged(ferramenta: Ferramenta, indexRow: Int) {
+        if dataProvider.value.elements[elementsSection].firstIndex(where: { element -> Bool in
+            return element.tool == ferramenta
+        }) != nil {
+            let indexPath = IndexPath(row: indexRow, section: elementsSection)
+            let cell = ToolsCellViewModel(tool: ferramenta)
+            dataProvider.value.editingStyle = .reload(cell, indexPath)
+        }
     }
 }
 

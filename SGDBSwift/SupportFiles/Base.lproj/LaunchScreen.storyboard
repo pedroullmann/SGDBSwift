@@ -17,38 +17,7 @@
                     <view key="view" contentMode="scaleToFill" id="Ze5-6b-2t3">
                         <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                        <subviews>
-                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="ulbra" translatesAutoresizingMaskIntoConstraints="NO" id="ogk-xf-an2">
-                                <rect key="frame" x="143" y="278" width="128" height="150"/>
-                                <constraints>
-                                    <constraint firstAttribute="width" constant="128" id="3Yi-7Y-Xrv"/>
-                                    <constraint firstAttribute="height" constant="150" id="6YG-Pi-3tY"/>
-                                </constraints>
-                            </imageView>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Trabalho banco de dados II" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Uy4-d1-tWR">
-                                <rect key="frame" x="20" y="448" width="374" height="21"/>
-                                <fontDescription key="fontDescription" type="system" weight="semibold" pointSize="17"/>
-                                <nil key="textColor"/>
-                                <nil key="highlightedColor"/>
-                            </label>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Pedro Adami Ullmann" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="c7k-dS-RRX">
-                                <rect key="frame" x="20" y="489" width="374" height="21"/>
-                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                <nil key="textColor"/>
-                                <nil key="highlightedColor"/>
-                            </label>
-                        </subviews>
-                        <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                        <constraints>
-                            <constraint firstItem="6Tk-OE-BBY" firstAttribute="trailing" secondItem="Uy4-d1-tWR" secondAttribute="trailing" constant="20" id="0g8-cy-bj0"/>
-                            <constraint firstItem="Uy4-d1-tWR" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" constant="20" id="89Q-6c-Ecg"/>
-                            <constraint firstItem="ogk-xf-an2" firstAttribute="centerY" secondItem="6Tk-OE-BBY" secondAttribute="centerY" constant="-100" id="Kay-SL-ash"/>
-                            <constraint firstItem="ogk-xf-an2" firstAttribute="centerX" secondItem="6Tk-OE-BBY" secondAttribute="centerX" id="Po4-nU-BTJ"/>
-                            <constraint firstItem="Uy4-d1-tWR" firstAttribute="top" secondItem="ogk-xf-an2" secondAttribute="bottom" constant="20" id="SNR-fe-E7W"/>
-                            <constraint firstItem="c7k-dS-RRX" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" constant="20" id="Siz-ta-TzC"/>
-                            <constraint firstItem="6Tk-OE-BBY" firstAttribute="trailing" secondItem="c7k-dS-RRX" secondAttribute="trailing" constant="20" id="YBZ-RU-nCK"/>
-                            <constraint firstItem="c7k-dS-RRX" firstAttribute="top" secondItem="Uy4-d1-tWR" secondAttribute="bottom" constant="20" id="uaa-HZ-7wJ"/>
-                        </constraints>
+                        <color key="backgroundColor" cocoaTouchSystemColor="viewFlipsideBackgroundColor"/>
                         <viewLayoutGuide key="safeArea" id="6Tk-OE-BBY"/>
                     </view>
                 </viewController>
@@ -57,7 +26,4 @@
             <point key="canvasLocation" x="53" y="375"/>
         </scene>
     </scenes>
-    <resources>
-        <image name="ulbra" width="750" height="910"/>
-    </resources>
 </document>

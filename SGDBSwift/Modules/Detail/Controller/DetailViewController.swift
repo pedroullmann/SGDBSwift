@@ -23,9 +23,9 @@ class DetailViewController: UIViewController {
     private var toolIndexPath: IndexPath?
     private var toolModel: Ferramenta?
     private var viewModel: DetailViewModel!
+    private var wasDeselected = false
     public var transactionIndexPath: IndexPath?
     public var transacao: Transacao?
-    public var transactionChanged = false
     public var transactionsDelegate: TransactionsProtocol?
     
     //MARK :- Lifecycle
@@ -38,7 +38,7 @@ class DetailViewController: UIViewController {
     }
     
     //MARK :- Functions
-    private func configBind() {
+    private func configBind() {        
         guard let unTransacao = transacao else { return }
         viewModel = DetailViewModel(worker: detailWorker, transacao: unTransacao)
         
@@ -48,6 +48,12 @@ class DetailViewController: UIViewController {
                 switch dataProvider.editingStyle {
                 case .reloadAll:
                     strongSelf.tableView.reloadData()
+                    
+                    if let unRow = unTransacao.rowSelected {
+                        let indexPath = IndexPath(row: unRow, section: 0)
+                        strongSelf.tableView.selectRow(at: indexPath, animated: true, scrollPosition: .none)
+                        strongSelf.descricao.text = unTransacao.visao[unRow].descricao
+                    }
                 case .reload(_, let indexPath):
                     strongSelf.tableView.reloadRows(at: [indexPath], with: .automatic)
                 case .insert(_, let indexPaths, _):
@@ -78,11 +84,6 @@ class DetailViewController: UIViewController {
             guard let strongSelf = self else { return }
             strongSelf.transacao = transacao
         }
-        
-        viewModel.transactionChanged.bind { [weak self] wasChanged in
-            guard let strongSelf = self else { return }
-            strongSelf.transactionChanged = wasChanged
-        }
     }
     
     private func configNavigation() {
@@ -110,11 +111,17 @@ class DetailViewController: UIViewController {
         toolModel = nil
     }
     
-    override func didMove(toParent parent: UIViewController?) {
+    private func modifiedRow(ferramenta: Ferramenta, indexRow: Int) {
+        if let unDelegate = transactionsDelegate {
+            unDelegate.goBackRowModified(ferramenta: ferramenta,
+                                         indexRow: indexRow)
+        }
+    }
+    
+    private func reloadTransaction() {
         guard let unTransactionIndexPath = transactionIndexPath,
             let unDelegate = transactionsDelegate,
-            let unTransaction = transacao,
-            transactionChanged else { return }
+            let unTransaction = transacao else { return }
         unDelegate.goBack(unTransactionIndexPath, unTransaction)
     }
     
@@ -127,6 +134,7 @@ class DetailViewController: UIViewController {
         if !removedSpaces.isEmpty {
             viewModel.insertToolCell(unDescricao)
             cleanComponents()
+            reloadTransaction()
         }
     }
     
@@ -138,6 +146,7 @@ class DetailViewController: UIViewController {
         if !removedSpaces.isEmpty {
             viewModel.reloadToolCell(unIndexPath, ferramenta: unTool, descricao: unDescricao)
             cleanComponents()
+            reloadTransaction()
         }
     }
     
@@ -146,6 +155,7 @@ class DetailViewController: UIViewController {
         guard let unIndexPath = toolIndexPath, toolModel != nil else { return }
         viewModel.removeToolCell(unIndexPath)
         cleanComponents()
+        reloadTransaction()
     }
     
     @IBAction func commit(_ sender: Any) {
@@ -156,7 +166,6 @@ class DetailViewController: UIViewController {
         //TODO: Salvar o rollback no log
         guard let unTransaction = transacao else { return }
         unTransaction.transacao_estado = .rollback
-        transactionChanged = true
         _ = navigationController?.popViewController(animated: true)
     }
 }
@@ -197,10 +206,33 @@ extension DetailViewController: UITableViewDelegate {
     }
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        guard let unTransaction = transacao else { return }
         let cellViewModel = viewModel[indexPath.section][indexPath.row]
+
+        if indexPath.row == unTransaction.rowSelected, !wasDeselected {
+            tableView.deselectRow(at: indexPath, animated: false)
+            unTransaction.rowSelected = nil
+            descricao.text = ""
+            cellViewModel.tool.transacao = nil
+            cellViewModel.tool.bloqueio = .desbloqueado
+            wasDeselected = true
+            
+            modifiedRow(ferramenta: cellViewModel.tool, indexRow: indexPath.row)
+        } else {
+            unTransaction.rowSelected = indexPath.row
+            descricao.text = cellViewModel.tool.descricao
+            cellViewModel.tool.transacao = unTransaction.id
+            cellViewModel.tool.bloqueio = .compartilhado
+            wasDeselected = false
+            
+            modifiedRow(ferramenta: cellViewModel.tool, indexRow: indexPath.row)
+        }
+
         toolModel = cellViewModel.tool
+        viewModel.reloadToolBloq(indexPath, ferramenta: toolModel!)
         toolIndexPath = indexPath
-        descricao.text = cellViewModel.tool.descricao
+
+        reloadTransaction()
     }
 }
 

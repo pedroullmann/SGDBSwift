@@ -9,6 +9,7 @@
 import UIKit
 
 protocol TransactionsProtocol: class {
+    func goBackRowModified(ferramenta: Ferramenta, indexRow: Int)
     func goBack(_ indexPath: IndexPath, _ transaction: Transacao)
 }
 
@@ -25,6 +26,7 @@ class TransactionsViewController: UIViewController {
     private let transactionCellIdentifier = "transactionCell"
     private let detailSegueIdentifier = "goToDetail"
     public var ferramentas: [Ferramenta] = []
+    weak var homeDelegate: HomeProtocol?
     
     //MARK :- Lifecycle
     override func viewDidLoad() {
@@ -149,11 +151,18 @@ extension TransactionsViewController: UITableViewDelegate {
 
 //MARK :- TransactionsProtocol
 extension TransactionsViewController: TransactionsProtocol {
+    func goBackRowModified(ferramenta: Ferramenta, indexRow: Int) {
+        if let unDelegate = homeDelegate {
+            unDelegate.goBackRowModified(ferramenta: ferramenta,
+                                         indexRow: indexRow)
+        }
+    }
+    
     func goBack(_ indexPath: IndexPath, _ transaction: Transacao) {
         let cellViewModel = viewModel[indexPath.section][indexPath.row]
         let transaction = cellViewModel.transaction
         let editedTransaction = transaction
-        
+
         viewModel.reloadTransactionCell(editedTransaction, indexPath)
     }
 }

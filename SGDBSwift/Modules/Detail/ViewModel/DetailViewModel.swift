@@ -14,7 +14,6 @@ class DetailViewModel {
     var elementsCount: Int
     var worker: DetailWorker
     var transacao: Dynamic<Transacao>
-    var transactionChanged: Dynamic<Bool>
     
     init(worker: DetailWorker, transacao: Transacao) {
         self.dataProvider = Dynamic(DataProvider())
@@ -22,7 +21,6 @@ class DetailViewModel {
         self.worker = worker
         self.error = Dynamic(nil)
         self.transacao = Dynamic(transacao)
-        self.transactionChanged = Dynamic(false)
     }
     
     func mapToToolsCellViewModel(_ ferramentas: [Ferramenta]) -> [ToolsCellViewModel] {
@@ -42,7 +40,6 @@ class DetailViewModel {
         elementsCount += 1
         let tool = Ferramenta(id: toolId, descricao: descricao, bloqueio: .desbloqueado)
         transacao.value.visao.append(tool)
-        transactionChanged.value = true
         let toolCellViewModel = ToolsCellViewModel(tool: tool)
         let indexPath = IndexPath(row: elementsCount - 1, section: 0)
         dataProvider.value.editingStyle = .insert([toolCellViewModel], [indexPath], false)
@@ -51,7 +48,6 @@ class DetailViewModel {
     func reloadToolCell(_ indexPath: IndexPath, ferramenta: Ferramenta, descricao: String) {
         let tool = Ferramenta(id: ferramenta.id, descricao: descricao, bloqueio: .desbloqueado)
         transacao.value.visao[indexPath.row] = tool
-        transactionChanged.value = true
         let toolCellViewModel = ToolsCellViewModel(tool: tool)
         dataProvider.value.editingStyle = .reload(toolCellViewModel, indexPath)
     }
@@ -59,8 +55,13 @@ class DetailViewModel {
     func removeToolCell(_ indexPath: IndexPath) {
         elementsCount -= 1
         transacao.value.visao.remove(at: indexPath.row)
-        transactionChanged.value = true
         dataProvider.value.editingStyle = .delete([], [indexPath], false)
+    }
+    
+    func reloadToolBloq(_ indexPath: IndexPath, ferramenta: Ferramenta) {
+        let tool = Ferramenta(id: ferramenta.id, descricao: ferramenta.descricao, bloqueio: ferramenta.bloqueio)
+        let toolCellViewModel = ToolsCellViewModel(tool: tool)
+        dataProvider.value.editingStyle = .reload(toolCellViewModel, indexPath)
     }
 }
 

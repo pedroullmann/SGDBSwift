@@ -8,6 +8,10 @@
 
 import UIKit
 
+protocol HomeProtocol: class {
+    func goBackRowModified(ferramenta: Ferramenta, indexRow: Int)
+}
+
 class HomeViewController: UIViewController {
     
     //MARK :- Outlets
@@ -90,6 +94,7 @@ class HomeViewController: UIViewController {
             let vc = segue.destination as? TransactionsViewController,
             let ferramentas = sender as? [Ferramenta] {
             vc.ferramentas = ferramentas
+            vc.homeDelegate = self
         }
     }
 }
@@ -127,6 +132,13 @@ extension HomeViewController: UITableViewDelegate {
     
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         return UITableView.automaticDimension
+    }
+}
+
+extension HomeViewController: HomeProtocol {
+    func goBackRowModified(ferramenta: Ferramenta, indexRow: Int) {
+        viewModel.toolWasChanged(ferramenta: ferramenta,
+                                 indexRow: indexRow)
     }
 }
 
