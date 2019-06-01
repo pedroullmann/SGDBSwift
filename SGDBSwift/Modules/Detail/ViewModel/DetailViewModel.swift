@@ -13,11 +13,13 @@ class DetailViewModel {
     var error: Dynamic<Error?>
     var elementsCount: Int
     var worker: DetailWorker
+    var elementsSection: Int
     var transacao: Dynamic<Transacao>
     
     init(worker: DetailWorker, transacao: Transacao) {
         self.dataProvider = Dynamic(DataProvider())
         self.elementsCount = 0
+        self.elementsSection = 0
         self.worker = worker
         self.error = Dynamic(nil)
         self.transacao = Dynamic(transacao)
@@ -56,12 +58,6 @@ class DetailViewModel {
         elementsCount -= 1
         transacao.value.visao.remove(at: indexPath.row)
         dataProvider.value.editingStyle = .delete([], [indexPath], false)
-    }
-    
-    func reloadToolBloq(_ indexPath: IndexPath, ferramenta: Ferramenta) {
-        let tool = Ferramenta(id: ferramenta.id, descricao: ferramenta.descricao, bloqueio: ferramenta.bloqueio)
-        let toolCellViewModel = ToolsCellViewModel(tool: tool)
-        dataProvider.value.editingStyle = .reload(toolCellViewModel, indexPath)
     }
 }
 

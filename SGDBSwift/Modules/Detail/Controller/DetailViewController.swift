@@ -53,9 +53,24 @@ class DetailViewController: UIViewController {
                         let indexPath = IndexPath(row: unRow, section: 0)
                         strongSelf.tableView.selectRow(at: indexPath, animated: true, scrollPosition: .none)
                         strongSelf.descricao.text = unTransacao.visao[unRow].descricao
+                        
+                        if let cell = strongSelf.tableView.cellForRow(at: indexPath) {
+                            cell.contentView.backgroundColor = .gray
+                        }
                     }
                 case .reload(_, let indexPath):
                     strongSelf.tableView.reloadRows(at: [indexPath], with: .automatic)
+                    
+                    if let _ = strongSelf.tableView.cellForRow(at: indexPath) {
+                        let cellViewModel = strongSelf.viewModel[indexPath.section][indexPath.row]
+                        
+                        if let unSelected = cellViewModel.isSelected, unSelected {
+                            strongSelf.tableView.selectRow(at: indexPath, animated: false, scrollPosition: .none)
+                        } else {
+                            strongSelf.tableView.deselectRow(at: indexPath, animated: false)
+                        }
+                    }
+                    
                 case .insert(_, let indexPaths, _):
                     if #available(iOS 11.0, *) {
                         strongSelf.tableView.performBatchUpdates({
@@ -205,34 +220,50 @@ extension DetailViewController: UITableViewDelegate {
         return UITableView.automaticDimension
     }
     
-    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        guard let unTransaction = transacao else { return }
+    func tableView(_ tableView: UITableView, willSelectRowAt indexPath: IndexPath) -> IndexPath? {
+        guard let unTransaction = transacao else { return nil }
+        guard let cell = tableView.cellForRow(at: indexPath) else { return nil }
         let cellViewModel = viewModel[indexPath.section][indexPath.row]
-
-        if indexPath.row == unTransaction.rowSelected, !wasDeselected {
+        
+        if cell.isSelected {
+            // Deselect Rows
             tableView.deselectRow(at: indexPath, animated: false)
+            cell.contentView.backgroundColor = .darkGray
+            
             unTransaction.rowSelected = nil
             descricao.text = ""
-            cellViewModel.tool.transacao = nil
-            cellViewModel.tool.bloqueio = .desbloqueado
-            wasDeselected = true
+            unTransaction.visao[indexPath.row].bloqueio = .desbloqueado
             
-            modifiedRow(ferramenta: cellViewModel.tool, indexRow: indexPath.row)
+            modifiedRow(ferramenta: unTransaction.visao[indexPath.row], indexRow: indexPath.row)
         } else {
+            // Select Rows
+            if let indexs = tableView.indexPathsForSelectedRows {
+                indexs.forEach { index in
+                    tableView.deselectRow(at: index, animated: false)
+                    unTransaction.visao[index.row].bloqueio = .desbloqueado
+                    modifiedRow(ferramenta: unTransaction.visao[index.row], indexRow: index.row)
+                }
+            }
+
+            tableView.selectRow(at: indexPath, animated: false, scrollPosition: .none)
+            cell.contentView.backgroundColor = .gray
+            
             unTransaction.rowSelected = indexPath.row
             descricao.text = cellViewModel.tool.descricao
-            cellViewModel.tool.transacao = unTransaction.id
-            cellViewModel.tool.bloqueio = .compartilhado
-            wasDeselected = false
+            unTransaction.visao[indexPath.row].bloqueio = .compartilhado
+            unTransaction.visao[indexPath.row].transacao = unTransaction.id
             
-            modifiedRow(ferramenta: cellViewModel.tool, indexRow: indexPath.row)
+            modifiedRow(ferramenta: unTransaction.visao[indexPath.row], indexRow: indexPath.row)
         }
-
-        toolModel = cellViewModel.tool
-        viewModel.reloadToolBloq(indexPath, ferramenta: toolModel!)
+        
+        toolModel = unTransaction.visao[indexPath.row]
         toolIndexPath = indexPath
-
         reloadTransaction()
+
+        viewModel.transacao.value = unTransaction
+        fetchData()
+        
+        return nil
     }
 }
 

@@ -14,6 +14,7 @@ class ToolsTableViewCell: UITableViewCell {
     @IBOutlet weak var codigo: UILabel!
     @IBOutlet weak var descricao: UILabel!
     @IBOutlet weak var bloqueio: UILabel!
+    @IBOutlet weak var contentCell: UIView!
     
     //MARK :- Properties
     public var viewModel: ToolsCellViewModel! {
@@ -31,6 +32,11 @@ class ToolsTableViewCell: UITableViewCell {
             bloqueio.text = "C"
         } else if viewModel.tool.bloqueio == .exclusivo {
             bloqueio.text = "E"
+        } else if viewModel.tool.bloqueio == .desbloqueado {
+            bloqueio.text = ""
         }
+        
+        guard let unSelected = viewModel.isSelected else { return }
+        contentCell.backgroundColor = unSelected ? .gray : .darkGray
     }
 }

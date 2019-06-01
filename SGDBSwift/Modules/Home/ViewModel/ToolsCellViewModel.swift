@@ -10,8 +10,10 @@ import Foundation
 
 class ToolsCellViewModel {
     var tool: Ferramenta
+    var isSelected: Bool?
     
-    init(tool: Ferramenta) {
+    init(tool: Ferramenta, isSelected: Bool? = false) {
         self.tool = tool
+        self.isSelected = isSelected
     }
 }
