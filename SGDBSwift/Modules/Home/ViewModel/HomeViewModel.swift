@@ -35,7 +35,7 @@ class HomeViewModel {
     }
     
     func toolWasChanged(ferramenta: Ferramenta, blockChanged: Bool) {
-        guard let index = getIndexOfViewModel(by: ferramenta) else { return }
+        guard let index = getIndexOfViewModel(by: ferramenta, blockChanged: blockChanged) else { return }
         let indexPath = IndexPath(row: index, section: elementsSection)
         
         if blockChanged {
@@ -51,10 +51,12 @@ class HomeViewModel {
         }
     }
     
-    func getIndexOfViewModel(by tool: Ferramenta) -> Array<ToolsCellViewModel>.Index? {
+    func getIndexOfViewModel(by tool: Ferramenta, blockChanged: Bool) -> Array<ToolsCellViewModel>.Index? {
         guard elementsSection < dataProvider.value.elements.count else { return nil }
         let indexRow = dataProvider.value.elements[elementsSection].firstIndex { (viewModel) -> Bool in
-            if viewModel.tool.id == tool.id, viewModel.tool.descricao == tool.descricao {
+            if blockChanged, viewModel.tool.id == tool.id {
+                return true
+            } else if viewModel.tool.id == tool.id, viewModel.tool.descricao == tool.descricao {
                 return true
             }
             return false
@@ -63,7 +65,7 @@ class HomeViewModel {
     }
     
     func removeBlock(transacaoId: Int, ferramenta: Ferramenta) {
-        guard let index = getIndexOfViewModel(by: ferramenta) else { return }
+        guard let index = getIndexOfViewModel(by: ferramenta, blockChanged: true) else { return }
         let indexPath = IndexPath(row: index, section: elementsSection)
         
         if let element = dataProvider.value.elements[elementsSection][safe: index]?.tool,

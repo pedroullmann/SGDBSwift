@@ -13,12 +13,14 @@ class TransactionsViewModel {
     var error: Dynamic<Error?>
     var elementsCount: Int
     var ferramentas: [Ferramenta]
+    var elementsSection: Int
     var worker: TransactionsWorker
     var buttonEnabled: Dynamic<Bool>
     
     init(worker: TransactionsWorker, ferramentas: [Ferramenta]) {
         self.dataProvider = Dynamic(DataProvider())
         self.elementsCount = 0
+        self.elementsSection = 0
         self.worker = worker
         self.ferramentas = ferramentas
         self.buttonEnabled = Dynamic(true)

@@ -177,6 +177,9 @@ class DetailViewController: UIViewController {
         
         viewModel.removeToolCell(unIndexPath)
         cleanComponents()
+        
+        unTransaction.rowSelected = nil
+        
         reloadTransaction()
     }
     
@@ -199,13 +202,20 @@ extension DetailViewController: UITableViewDataSource {
     }
 
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        guard let unTransaction = transacao else { return UITableViewCell() }
         let cellViewModel = viewModel[indexPath.section][indexPath.row]
 
         guard let cell = tableView.dequeueReusableCell(withIdentifier: toolsCellIdentifier, for: indexPath) as? ToolsTableViewCell  else {
             return UITableViewCell()
         }
+        
+        if let unRow = unTransaction.rowSelected, unRow == indexPath.row {
+            toolIndexPath = indexPath
+            toolModel = cellViewModel.tool
+        }
 
         cell.viewModel = cellViewModel
+
         return cell
     }
 }
@@ -225,6 +235,15 @@ extension DetailViewController: UITableViewDelegate {
 
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         return UITableView.automaticDimension
+    }
+    
+    func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
+        guard let unTransaction = transacao else { return }
+
+        if let unRow = unTransaction.rowSelected, unRow == indexPath.row {
+            tableView.selectRow(at: indexPath, animated: false, scrollPosition: .none)
+            cell.contentView.backgroundColor = .gray
+        }
     }
     
     func tableView(_ tableView: UITableView, willSelectRowAt indexPath: IndexPath) -> IndexPath? {
