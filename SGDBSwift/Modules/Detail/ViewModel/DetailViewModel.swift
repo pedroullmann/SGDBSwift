@@ -48,7 +48,7 @@ class DetailViewModel {
     }
     
     func reloadToolCell(_ indexPath: IndexPath, ferramenta: Ferramenta, descricao: String) {
-        let tool = Ferramenta(id: ferramenta.id, descricao: descricao, bloqueio: .desbloqueado)
+        let tool = Ferramenta(id: ferramenta.id, descricao: descricao, bloqueio: .exclusivo)
         transacao.value.visao[indexPath.row] = tool
         let toolCellViewModel = ToolsCellViewModel(tool: tool)
         dataProvider.value.editingStyle = .reload(toolCellViewModel, indexPath)

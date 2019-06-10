@@ -50,9 +50,10 @@ class DetailViewController: UIViewController {
                     strongSelf.tableView.reloadData()
                     
                     if let unRow = unTransacao.rowSelected {
+                        guard let element = unTransacao.visao[safe: unRow] else { return }
                         let indexPath = IndexPath(row: unRow, section: 0)
                         strongSelf.tableView.selectRow(at: indexPath, animated: true, scrollPosition: .none)
-                        strongSelf.descricao.text = unTransacao.visao[unRow].descricao
+                        strongSelf.descricao.text = element.descricao
                         
                         if let cell = strongSelf.tableView.cellForRow(at: indexPath) {
                             cell.contentView.backgroundColor = .gray
@@ -126,10 +127,10 @@ class DetailViewController: UIViewController {
         toolModel = nil
     }
     
-    private func modifiedRow(ferramenta: Ferramenta, indexRow: Int) {
+    private func modifiedRow(ferramenta: Ferramenta, blockChanged: Bool) {
         if let unDelegate = transactionsDelegate {
             unDelegate.goBackRowModified(ferramenta: ferramenta,
-                                         indexRow: indexRow)
+                                         blockChanged: blockChanged)
         }
     }
     
@@ -155,19 +156,25 @@ class DetailViewController: UIViewController {
     
     @IBAction func alterar(_ sender: Any) {
         //TODO: Salvar o alterar no log
-        guard let unIndexPath = toolIndexPath, let unTool = toolModel, let unDescricao = descricao.text else { return }
+        guard let unIndexPath = toolIndexPath, let unTool = toolModel, let unDescricao = descricao.text, let unTransaction = transacao else { return }
         let removedSpaces = unDescricao.trimmingCharacters(in: .whitespaces)
         
         if !removedSpaces.isEmpty {
             viewModel.reloadToolCell(unIndexPath, ferramenta: unTool, descricao: unDescricao)
             cleanComponents()
             reloadTransaction()
+            unTransaction.visao[unIndexPath.row].transacao = unTransaction.id
+            modifiedRow(ferramenta: unTransaction.visao[unIndexPath.row], blockChanged: true)
         }
     }
     
     @IBAction func remover(_ sender: Any) {
         //TODO: Salvar o remover no log
-        guard let unIndexPath = toolIndexPath, toolModel != nil else { return }
+        guard let unIndexPath = toolIndexPath, toolModel != nil, let unTransaction = transacao else { return }
+        if let unDelegate = transactionsDelegate {
+            unDelegate.goBackRemoveBlock(transacaoId: unTransaction.id, ferramenta: unTransaction.visao[unIndexPath.row])
+        }
+        
         viewModel.removeToolCell(unIndexPath)
         cleanComponents()
         reloadTransaction()
@@ -232,16 +239,23 @@ extension DetailViewController: UITableViewDelegate {
             
             unTransaction.rowSelected = nil
             descricao.text = ""
-            unTransaction.visao[indexPath.row].bloqueio = .desbloqueado
             
-            modifiedRow(ferramenta: unTransaction.visao[indexPath.row], indexRow: indexPath.row)
+            if let bloq = unTransaction.visao[indexPath.row].bloqueio, bloq == .exclusivo {
+                modifiedRow(ferramenta: unTransaction.visao[indexPath.row], blockChanged: true)
+            } else {
+                unTransaction.visao[indexPath.row].bloqueio = .desbloqueado
+                modifiedRow(ferramenta: unTransaction.visao[indexPath.row], blockChanged: false)
+            }
         } else {
             // Select Rows
             if let indexs = tableView.indexPathsForSelectedRows {
                 indexs.forEach { index in
                     tableView.deselectRow(at: index, animated: false)
+                    if let bloq = unTransaction.visao[index.row].bloqueio, bloq == .exclusivo {
+                        return
+                    }
                     unTransaction.visao[index.row].bloqueio = .desbloqueado
-                    modifiedRow(ferramenta: unTransaction.visao[index.row], indexRow: index.row)
+                    modifiedRow(ferramenta: unTransaction.visao[index.row], blockChanged: false)
                 }
             }
 
@@ -250,10 +264,15 @@ extension DetailViewController: UITableViewDelegate {
             
             unTransaction.rowSelected = indexPath.row
             descricao.text = cellViewModel.tool.descricao
-            unTransaction.visao[indexPath.row].bloqueio = .compartilhado
+            
             unTransaction.visao[indexPath.row].transacao = unTransaction.id
             
-            modifiedRow(ferramenta: unTransaction.visao[indexPath.row], indexRow: indexPath.row)
+            if let bloq = unTransaction.visao[indexPath.row].bloqueio, bloq != .exclusivo {
+                unTransaction.visao[indexPath.row].bloqueio = .compartilhado
+                modifiedRow(ferramenta: unTransaction.visao[indexPath.row], blockChanged: false)
+            } else {
+                modifiedRow(ferramenta: unTransaction.visao[indexPath.row], blockChanged: true)
+            }
         }
         
         toolModel = unTransaction.visao[indexPath.row]

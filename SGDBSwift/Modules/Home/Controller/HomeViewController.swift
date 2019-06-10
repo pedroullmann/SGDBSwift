@@ -9,7 +9,8 @@
 import UIKit
 
 protocol HomeProtocol: class {
-    func goBackRowModified(ferramenta: Ferramenta, indexRow: Int)
+    func goBackRowModified(ferramenta: Ferramenta, blockChanged: Bool)
+    func goBackRemoveBlock(transacaoId: Int, ferramenta: Ferramenta)
 }
 
 class HomeViewController: UIViewController {
@@ -136,9 +137,13 @@ extension HomeViewController: UITableViewDelegate {
 }
 
 extension HomeViewController: HomeProtocol {
-    func goBackRowModified(ferramenta: Ferramenta, indexRow: Int) {
+    func goBackRowModified(ferramenta: Ferramenta, blockChanged: Bool) {
         viewModel.toolWasChanged(ferramenta: ferramenta,
-                                 indexRow: indexRow)
+                                 blockChanged: blockChanged)
+    }
+    
+    func goBackRemoveBlock(transacaoId: Int, ferramenta: Ferramenta) {
+        viewModel.removeBlock(transacaoId: transacaoId, ferramenta: ferramenta)
     }
 }
 

@@ -34,12 +34,43 @@ class HomeViewModel {
         return result
     }
     
-    func toolWasChanged(ferramenta: Ferramenta, indexRow: Int) {
-        if dataProvider.value.elements[elementsSection].firstIndex(where: { element -> Bool in
-            return element.tool == ferramenta
-        }) != nil {
-            let indexPath = IndexPath(row: indexRow, section: elementsSection)
+    func toolWasChanged(ferramenta: Ferramenta, blockChanged: Bool) {
+        guard let index = getIndexOfViewModel(by: ferramenta) else { return }
+        let indexPath = IndexPath(row: index, section: elementsSection)
+        
+        if blockChanged {
+            if let element = dataProvider.value.elements[elementsSection][safe: index]?.tool {
+                element.transacao = ferramenta.transacao
+                element.bloqueio = ferramenta.bloqueio
+                let cell = ToolsCellViewModel(tool: element)
+                dataProvider.value.editingStyle = .reload(cell, indexPath)
+            }
+        } else {
             let cell = ToolsCellViewModel(tool: ferramenta)
+            dataProvider.value.editingStyle = .reload(cell, indexPath)
+        }
+    }
+    
+    func getIndexOfViewModel(by tool: Ferramenta) -> Array<ToolsCellViewModel>.Index? {
+        guard elementsSection < dataProvider.value.elements.count else { return nil }
+        let indexRow = dataProvider.value.elements[elementsSection].firstIndex { (viewModel) -> Bool in
+            if viewModel.tool.id == tool.id, viewModel.tool.descricao == tool.descricao {
+                return true
+            }
+            return false
+        }
+        return indexRow
+    }
+    
+    func removeBlock(transacaoId: Int, ferramenta: Ferramenta) {
+        guard let index = getIndexOfViewModel(by: ferramenta) else { return }
+        let indexPath = IndexPath(row: index, section: elementsSection)
+        
+        if let element = dataProvider.value.elements[elementsSection][safe: index]?.tool,
+            let id = element.transacao, id == transacaoId {
+            element.bloqueio = .desbloqueado
+
+            let cell = ToolsCellViewModel(tool: element)
             dataProvider.value.editingStyle = .reload(cell, indexPath)
         }
     }

@@ -9,7 +9,8 @@
 import UIKit
 
 protocol TransactionsProtocol: class {
-    func goBackRowModified(ferramenta: Ferramenta, indexRow: Int)
+    func goBackRowModified(ferramenta: Ferramenta, blockChanged: Bool)
+    func goBackRemoveBlock(transacaoId: Int, ferramenta: Ferramenta)
     func goBack(_ indexPath: IndexPath, _ transaction: Transacao)
 }
 
@@ -151,10 +152,16 @@ extension TransactionsViewController: UITableViewDelegate {
 
 //MARK :- TransactionsProtocol
 extension TransactionsViewController: TransactionsProtocol {
-    func goBackRowModified(ferramenta: Ferramenta, indexRow: Int) {
+    func goBackRowModified(ferramenta: Ferramenta, blockChanged: Bool) {
         if let unDelegate = homeDelegate {
             unDelegate.goBackRowModified(ferramenta: ferramenta,
-                                         indexRow: indexRow)
+                                         blockChanged: blockChanged)
+        }
+    }
+    
+    func goBackRemoveBlock(transacaoId: Int, ferramenta: Ferramenta) {
+        if let unDelegate = homeDelegate {
+            unDelegate.goBackRemoveBlock(transacaoId: transacaoId, ferramenta: ferramenta)
         }
     }
     
