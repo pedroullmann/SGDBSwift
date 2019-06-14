@@ -16,6 +16,7 @@ class TransactionsViewModel {
     var elementsSection: Int
     var worker: TransactionsWorker
     var buttonEnabled: Dynamic<Bool>
+    var listWorker: ListWorker
     
     init(worker: TransactionsWorker, ferramentas: [Ferramenta]) {
         self.dataProvider = Dynamic(DataProvider())
@@ -25,6 +26,7 @@ class TransactionsViewModel {
         self.ferramentas = ferramentas
         self.buttonEnabled = Dynamic(true)
         self.error = Dynamic(nil)
+        self.listWorker = ListWorker()
     }
     
     func mapToTransactionCellViewModel(_ transactions: [Transacao]) -> [TransactionCellViewModel] {
@@ -46,6 +48,19 @@ class TransactionsViewModel {
                     strongSelf.dataProvider.value.editingStyle = .reload(transcatioNCellViewModel, indexPath)
                 case .error:
                     break
+                }
+            }
+        }
+    }
+    
+    func createBlock(list: List) {
+        listWorker.createBlock(list: list) { result in
+            DispatchQueue.main.async {
+                switch result {
+                case .success:
+                    print("SUCESSO")
+                case .error:
+                    print("ERRO")
                 }
             }
         }

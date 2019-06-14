@@ -22,24 +22,32 @@ class ListViewModel {
         self.worker = worker
         self.error = Dynamic(nil)
     }
+    
+    func mapToListCellViewModel(_ list: [List]) -> [ListCellViewModel] {
+        let result = list.map { block -> ListCellViewModel in
+            let listCellViewModel = ListCellViewModel(list: block)
+            return listCellViewModel
+        }
+        
+        return result
+    }
 }
 
 extension ListViewModel: TableViewViewModelProtocol {
     func fetch() {
-//        worker.getTransactions { [weak self] result in
-//            guard let strongSelf = self else { return }
-//            DispatchQueue.main.async {
-//                switch result {
-//                case .success(let transactions):
-//                    let orderedTransactions = transactions.sorted(by: { $0.id < $1.id })
-//                    let elements = strongSelf.mapToTransactionCellViewModel(orderedTransactions)
-//                    strongSelf.elementsCount = elements.count
-//                    strongSelf.dataProvider.value = DataProvider(withElements: [elements])
-//                case .error(let error):
-//                    strongSelf.error.value = error
-//                }
-//            }
-//        }
+        worker.getListBlock { [weak self] result in
+            guard let strongSelf = self else { return }
+            DispatchQueue.main.async {
+                switch result {
+                case .success(let list):
+                    let elements = strongSelf.mapToListCellViewModel(list)
+                    strongSelf.elementsCount = elements.count
+                    strongSelf.dataProvider.value = DataProvider(withElements: [elements])
+                case .error(let error):
+                    strongSelf.error.value = error
+                }
+            }
+        }
     }
     
     func getElementsCount() -> Int {

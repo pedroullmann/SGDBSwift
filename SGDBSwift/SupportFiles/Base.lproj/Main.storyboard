@@ -721,7 +721,7 @@
                         <subviews>
                             <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="Vbu-vc-kdu">
                                 <rect key="frame" x="0.0" y="140" width="414" height="722"/>
-                                <color key="backgroundColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <color key="backgroundColor" red="0.14509931206703186" green="0.14509579539299011" blue="0.14509817957878113" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
                                 <prototypes>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" reuseIdentifier="listCell" rowHeight="115" id="kx6-Gl-qB1" customClass="ListTableViewCell" customModule="SGDBSwift" customModuleProvider="target">
                                         <rect key="frame" x="0.0" y="28" width="414" height="115"/>
@@ -825,7 +825,6 @@
                                         </tableViewCellContentView>
                                         <color key="backgroundColor" red="0.1176481619477272" green="0.11764507740736008" blue="0.11764716356992722" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
                                         <connections>
-                                            <outlet property="ativo" destination="NzF-Nu-2JM" id="qkf-JX-v0B"/>
                                             <outlet property="transacaoBloqueada" destination="dp5-mC-DWj" id="iJw-Vn-JvL"/>
                                             <outlet property="transacaoLiberada" destination="FFv-oo-uxV" id="y6h-le-2dt"/>
                                         </connections>

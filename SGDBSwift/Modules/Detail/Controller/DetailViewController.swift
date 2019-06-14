@@ -105,10 +105,9 @@ class DetailViewController: UIViewController {
     
     private func configBlockedBy() {
         guard let unTransacao = transacao, let blockedBy = unTransacao.blockedBy,
-            blockedBy != unTransacao.id else { return }
+            blockedBy != unTransacao.id, let unDelegate = transactionsDelegate else { return }
         
         if let unIndex = unTransacao.rowSelected,
-            let unDelegate = transactionsDelegate,
             unDelegate.verifyBlock(transacaoId: unTransacao.id,
                                    ferramenta: unTransacao.visao[unIndex]) == nil {
             unTransacao.blockedBy = nil
@@ -116,6 +115,9 @@ class DetailViewController: UIViewController {
             reloadTransaction()
             fetchData()
         } else {
+            let list = List(id: 0, transacaoBloqueada: unTransacao.id, transacaoLiberada: blockedBy)
+            unDelegate.createBlockList(list: list)
+            
             let alert = UIAlertController(title: "Bloqueio", message: "Este registro está sendo bloqueado pela transação \(blockedBy), vá para a lista de espera para desbloquea-lo.", preferredStyle: .alert)
             
             let ok = UIAlertAction(title: "OK", style: .default, handler: { action in
