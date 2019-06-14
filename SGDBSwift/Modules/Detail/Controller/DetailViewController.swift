@@ -115,7 +115,7 @@ class DetailViewController: UIViewController {
             reloadTransaction()
             fetchData()
         } else {
-            let list = List(id: 0, transacaoBloqueada: unTransacao.id, transacaoLiberada: blockedBy)
+            let list = List(id: 0, transacaoBloqueada: unTransacao.id, transacaoLiberada: blockedBy, deadlock: false)
             unDelegate.createBlockList(list: list)
             
             let alert = UIAlertController(title: "Bloqueio", message: "Este registro está sendo bloqueado pela transação \(blockedBy), vá para a lista de espera para desbloquea-lo.", preferredStyle: .alert)

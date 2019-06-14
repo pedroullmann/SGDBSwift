@@ -13,6 +13,7 @@ protocol TransactionsProtocol: class {
     func verifyBlock(transacaoId: Int, ferramenta: Ferramenta) -> Int?
     func goBackRemoveBlock(transacaoId: Int, ferramenta: Ferramenta)
     func createBlockList(list: List)
+    func verifyDeadlock(transacaoId: Int)
     func goBack(_ indexPath: IndexPath, _ transaction: Transacao)
 }
 
@@ -183,6 +184,10 @@ extension TransactionsViewController: TransactionsProtocol {
     
     func createBlockList(list: List) {
         viewModel.createBlock(list: list)
+    }
+    
+    func verifyDeadlock(transacaoId: Int) {
+        
     }
     
     func goBack(_ indexPath: IndexPath, _ transaction: Transacao) {

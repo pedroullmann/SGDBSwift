@@ -16,7 +16,9 @@ class ListViewController: UIViewController {
     // MARK:- Properties
     private let listWorker: ListWorker = ListWorker()
     private let listCellIdentifier = "listCell"
+    private let deadlockCellIdentifier = "deadlockCell"
     private let listCellHeight: CGFloat = 115
+    private let deadlockCellHeight: CGFloat = 160
     private var viewModel: ListViewModel!
     
     //MARK :- Lifecycle

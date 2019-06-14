@@ -16,19 +16,23 @@ class List: Codable, Equatable {
     var id: Int
     var transacaoBloqueada: Int
     var transacaoLiberada: Int
+    var deadlock: Bool
     
     init(id: Int,
          transacaoBloqueada: Int,
-         transacaoLiberada: Int) {
+         transacaoLiberada: Int,
+         deadlock: Bool) {
         self.id = id
         self.transacaoBloqueada = transacaoBloqueada
         self.transacaoLiberada = transacaoLiberada
+        self.deadlock = deadlock
     }
     
     private enum CodingKeys: String, CodingKey {
         case id
         case transacaoBloqueada
         case transacaoLiberada
+        case deadlock
     }
     
     required init(from decoder: Decoder) throws {
@@ -36,6 +40,7 @@ class List: Codable, Equatable {
         id = try values.decode(Int.self, forKey: .id)
         transacaoBloqueada = try values.decode(Int.self, forKey: .transacaoBloqueada)
         transacaoLiberada = try values.decode(Int.self, forKey: .transacaoLiberada)
+        deadlock = try values.decode(Bool.self, forKey: .deadlock)
     }
     
     func encode(to encoder: Encoder) throws {
@@ -43,5 +48,6 @@ class List: Codable, Equatable {
         try container.encode(id, forKey: .id)
         try container.encode(transacaoBloqueada, forKey: .transacaoBloqueada)
         try container.encode(transacaoLiberada, forKey: .transacaoLiberada)
+        try container.encode(deadlock, forKey: .deadlock)
     }
 }
