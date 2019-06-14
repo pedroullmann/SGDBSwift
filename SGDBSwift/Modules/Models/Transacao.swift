@@ -38,19 +38,22 @@ class Transacao: Codable, Equatable {
     var transacao_estado: EstadoTransacao
     var data: String
     var rowSelected: Int?
+    var blockedBy: Int?
     
     init(id: Int,
          nome: String,
          visao: [Ferramenta],
          transacao_estado: EstadoTransacao,
          data: String,
-         rowSelected: Int? = nil) {
+         rowSelected: Int? = nil,
+         blockedBy: Int? = nil) {
         self.id = id
         self.nome = nome
         self.visao = visao
         self.transacao_estado = transacao_estado
         self.data = data
         self.rowSelected = rowSelected
+        self.blockedBy = blockedBy
     }
     
     private enum CodingKeys: String, CodingKey {
@@ -60,6 +63,7 @@ class Transacao: Codable, Equatable {
         case transacao_estado
         case data
         case rowSelected
+        case blockedBy
     }
     
     required init(from decoder: Decoder) throws {
@@ -74,6 +78,12 @@ class Transacao: Codable, Equatable {
             rowSelected = unRowSelected
         } else {
             rowSelected = nil
+        }
+        
+        if let unBlockedBy = try? values.decode(Int.self, forKey: .blockedBy) {
+            blockedBy = unBlockedBy
+        } else {
+            blockedBy = nil
         }
 
         if let unEstado = try? values.decode(Int.self, forKey: .transacao_estado) {
@@ -91,5 +101,6 @@ class Transacao: Codable, Equatable {
         try container.encode(transacao_estado, forKey: .transacao_estado)
         try container.encode(rowSelected, forKey: .rowSelected)
         try container.encode(data, forKey: .data)
+        try container.encode(blockedBy, forKey: .blockedBy)
     }
 }

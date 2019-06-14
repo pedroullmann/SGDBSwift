@@ -27,7 +27,7 @@ class DetailViewModel {
     
     func mapToToolsCellViewModel(_ ferramentas: [Ferramenta]) -> [ToolsCellViewModel] {
         let result = ferramentas.map { tool -> ToolsCellViewModel in
-            let toolCellViewModel = ToolsCellViewModel(tool: tool)
+            let toolCellViewModel = ToolsCellViewModel(tool: tool, isTransaction: true)
             return toolCellViewModel
         }
         
@@ -42,7 +42,7 @@ class DetailViewModel {
         elementsCount += 1
         let tool = Ferramenta(id: toolId, descricao: descricao, bloqueio: .desbloqueado)
         transacao.value.visao.append(tool)
-        let toolCellViewModel = ToolsCellViewModel(tool: tool)
+        let toolCellViewModel = ToolsCellViewModel(tool: tool, isTransaction: true)
         let indexPath = IndexPath(row: elementsCount - 1, section: 0)
         dataProvider.value.editingStyle = .insert([toolCellViewModel], [indexPath], false)
     }
@@ -50,7 +50,7 @@ class DetailViewModel {
     func reloadToolCell(_ indexPath: IndexPath, ferramenta: Ferramenta, descricao: String) {
         let tool = Ferramenta(id: ferramenta.id, descricao: descricao, bloqueio: .exclusivo)
         transacao.value.visao[indexPath.row] = tool
-        let toolCellViewModel = ToolsCellViewModel(tool: tool)
+        let toolCellViewModel = ToolsCellViewModel(tool: tool, isTransaction: true)
         dataProvider.value.editingStyle = .reload(toolCellViewModel, indexPath)
     }
     

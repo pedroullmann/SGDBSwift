@@ -35,6 +35,7 @@ class DetailViewController: UIViewController {
         configTableView()
         configNavigation()
         fetchData()
+        configBlockedBy()
     }
     
     //MARK :- Functions
@@ -99,6 +100,30 @@ class DetailViewController: UIViewController {
         viewModel.transacao.bind { [weak self] transacao in
             guard let strongSelf = self else { return }
             strongSelf.transacao = transacao
+        }
+    }
+    
+    private func configBlockedBy() {
+        guard let unTransacao = transacao, let blockedBy = unTransacao.blockedBy,
+            blockedBy != unTransacao.id else { return }
+        
+        if let unIndex = unTransacao.rowSelected,
+            let unDelegate = transactionsDelegate,
+            unDelegate.verifyBlock(transacaoId: unTransacao.id,
+                                   ferramenta: unTransacao.visao[unIndex]) == nil {
+            unTransacao.blockedBy = nil
+            
+            reloadTransaction()
+            fetchData()
+        } else {
+            let alert = UIAlertController(title: "Bloqueio", message: "Este registro está sendo bloqueado pela transação \(blockedBy), vá para a lista de espera para desbloquea-lo.", preferredStyle: .alert)
+            
+            let ok = UIAlertAction(title: "OK", style: .default, handler: { action in
+                self.navigationController?.popViewController(animated: true)
+            })
+            
+            alert.addAction(ok)
+            present(alert, animated: true)
         }
     }
     
@@ -172,6 +197,7 @@ class DetailViewController: UIViewController {
         //TODO: Salvar o remover no log
         guard let unIndexPath = toolIndexPath, toolModel != nil, let unTransaction = transacao else { return }
         if let unDelegate = transactionsDelegate {
+            unTransaction.visao[unIndexPath.row].transacao = 0
             unDelegate.goBackRemoveBlock(transacaoId: unTransaction.id, ferramenta: unTransaction.visao[unIndexPath.row])
         }
         
@@ -247,8 +273,9 @@ extension DetailViewController: UITableViewDelegate {
     }
     
     func tableView(_ tableView: UITableView, willSelectRowAt indexPath: IndexPath) -> IndexPath? {
-        guard let unTransaction = transacao else { return nil }
-        guard let cell = tableView.cellForRow(at: indexPath) else { return nil }
+        guard let unTransaction = transacao,
+            let cell = tableView.cellForRow(at: indexPath),
+            let unDelegate = transactionsDelegate else { return nil }
         let cellViewModel = viewModel[indexPath.section][indexPath.row]
         
         if cell.isSelected {
@@ -262,20 +289,37 @@ extension DetailViewController: UITableViewDelegate {
             if let bloq = unTransaction.visao[indexPath.row].bloqueio, bloq == .exclusivo {
                 modifiedRow(ferramenta: unTransaction.visao[indexPath.row], blockChanged: true)
             } else {
+                unTransaction.visao[indexPath.row].transacao = 0
                 unTransaction.visao[indexPath.row].bloqueio = .desbloqueado
                 modifiedRow(ferramenta: unTransaction.visao[indexPath.row], blockChanged: false)
             }
         } else {
-            // Select Rows
             if let indexs = tableView.indexPathsForSelectedRows {
                 indexs.forEach { index in
                     tableView.deselectRow(at: index, animated: false)
                     if let bloq = unTransaction.visao[index.row].bloqueio, bloq == .exclusivo {
                         return
                     }
+                    unTransaction.visao[indexPath.row].transacao = 0
                     unTransaction.visao[index.row].bloqueio = .desbloqueado
                     modifiedRow(ferramenta: unTransaction.visao[index.row], blockChanged: false)
                 }
+            }
+            
+            let tool = unTransaction.visao[indexPath.row]
+            if let unData = unDelegate.verifyBlock(transacaoId: unTransaction.id, ferramenta: tool) {
+                unTransaction.blockedBy = unData
+                
+                tableView.selectRow(at: indexPath, animated: false, scrollPosition: .none)
+                cell.contentView.backgroundColor = .gray
+                
+                unTransaction.rowSelected = indexPath.row
+                reloadTransaction()
+                viewModel.transacao.value = unTransaction
+                
+                configBlockedBy()
+                
+                return nil
             }
 
             tableView.selectRow(at: indexPath, animated: false, scrollPosition: .none)
@@ -284,13 +328,11 @@ extension DetailViewController: UITableViewDelegate {
             unTransaction.rowSelected = indexPath.row
             descricao.text = cellViewModel.tool.descricao
             
-            unTransaction.visao[indexPath.row].transacao = unTransaction.id
-            
-            if let bloq = unTransaction.visao[indexPath.row].bloqueio, bloq != .exclusivo {
-                unTransaction.visao[indexPath.row].bloqueio = .compartilhado
-                modifiedRow(ferramenta: unTransaction.visao[indexPath.row], blockChanged: false)
+            if let bloq = tool.bloqueio, bloq != .exclusivo {
+                tool.bloqueio = .compartilhado
+                modifiedRow(ferramenta: tool, blockChanged: false)
             } else {
-                modifiedRow(ferramenta: unTransaction.visao[indexPath.row], blockChanged: true)
+                modifiedRow(ferramenta: tool, blockChanged: true)
             }
         }
         

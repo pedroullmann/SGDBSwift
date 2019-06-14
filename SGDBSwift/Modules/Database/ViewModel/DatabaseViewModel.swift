@@ -25,7 +25,7 @@ class DatabaseViewModel {
     
     func mapToToolsCellViewModel(_ ferramentas: [Ferramenta]) -> [ToolsCellViewModel] {
         let result = ferramentas.map { tool -> ToolsCellViewModel in
-            let toolCellViewModel = ToolsCellViewModel(tool: tool)
+            let toolCellViewModel = ToolsCellViewModel(tool: tool, isTransaction: true)
             return toolCellViewModel
         }
         

@@ -10,6 +10,7 @@ import UIKit
 
 protocol HomeProtocol: class {
     func goBackRowModified(ferramenta: Ferramenta, blockChanged: Bool)
+    func verifyBlock(transacaoId: Int, ferramenta: Ferramenta) -> Int?
     func goBackRemoveBlock(transacaoId: Int, ferramenta: Ferramenta)
 }
 
@@ -140,6 +141,10 @@ extension HomeViewController: HomeProtocol {
     func goBackRowModified(ferramenta: Ferramenta, blockChanged: Bool) {
         viewModel.toolWasChanged(ferramenta: ferramenta,
                                  blockChanged: blockChanged)
+    }
+    
+    func verifyBlock(transacaoId: Int, ferramenta: Ferramenta) -> Int? {
+        return viewModel.verifyBlock(transacaoId: transacaoId, ferramenta: ferramenta)
     }
     
     func goBackRemoveBlock(transacaoId: Int, ferramenta: Ferramenta) {

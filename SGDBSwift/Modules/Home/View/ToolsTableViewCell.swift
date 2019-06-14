@@ -15,6 +15,7 @@ class ToolsTableViewCell: UITableViewCell {
     @IBOutlet weak var descricao: UILabel!
     @IBOutlet weak var bloqueio: UILabel!
     @IBOutlet weak var contentCell: UIView!
+    @IBOutlet weak var blockedBy: UILabel!
     
     //MARK :- Properties
     public var viewModel: ToolsCellViewModel! {
@@ -32,6 +33,10 @@ class ToolsTableViewCell: UITableViewCell {
             bloqueio.text = "C"
         } else if viewModel.tool.bloqueio == .exclusivo {
             bloqueio.text = "E"
+            
+            if let unTransacao = viewModel.tool.transacao, !viewModel.isTransaction {
+                blockedBy.text = unTransacao != 0 ? "T\(unTransacao)" : ""
+            }
         } else if viewModel.tool.bloqueio == .desbloqueado {
             bloqueio.text = ""
         }

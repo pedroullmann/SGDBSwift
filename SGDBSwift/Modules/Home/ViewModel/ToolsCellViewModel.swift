@@ -11,9 +11,11 @@ import Foundation
 class ToolsCellViewModel {
     var tool: Ferramenta
     var isSelected: Bool?
+    var isTransaction: Bool
     
-    init(tool: Ferramenta, isSelected: Bool? = false) {
+    init(tool: Ferramenta, isSelected: Bool? = false, isTransaction: Bool) {
         self.tool = tool
         self.isSelected = isSelected
+        self.isTransaction = isTransaction
     }
 }

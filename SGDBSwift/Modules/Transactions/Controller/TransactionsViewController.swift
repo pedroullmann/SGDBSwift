@@ -10,6 +10,7 @@ import UIKit
 
 protocol TransactionsProtocol: class {
     func goBackRowModified(ferramenta: Ferramenta, blockChanged: Bool)
+    func verifyBlock(transacaoId: Int, ferramenta: Ferramenta) -> Int?
     func goBackRemoveBlock(transacaoId: Int, ferramenta: Ferramenta)
     func goBack(_ indexPath: IndexPath, _ transaction: Transacao)
 }
@@ -82,7 +83,9 @@ class TransactionsViewController: UIViewController {
     
     private func configNavigation() {
         navigationItem.backBarButtonItem = UIBarButtonItem(title:"", style:.plain, target:nil, action:nil)
-        navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .add, target: self, action: #selector(criarTransacao))
+        let add = UIBarButtonItem(barButtonSystemItem: .add, target: self, action: #selector(criarTransacao))
+        let lista = UIBarButtonItem(title: "Lista de espera", style: .plain, target: self, action: #selector(listaDeEspera))
+        navigationItem.rightBarButtonItems = [add, lista]
     }
     
     private func configTableView() {
@@ -97,6 +100,10 @@ class TransactionsViewController: UIViewController {
     
     @objc func criarTransacao() {
         viewModel.createTransaction()
+    }
+    
+    @objc func listaDeEspera() {
+        
     }
     
     // MARK:- Navigation
@@ -157,6 +164,13 @@ extension TransactionsViewController: TransactionsProtocol {
             unDelegate.goBackRowModified(ferramenta: ferramenta,
                                          blockChanged: blockChanged)
         }
+    }
+    
+    func verifyBlock(transacaoId: Int, ferramenta: Ferramenta) -> Int? {
+        if let unDelegate = homeDelegate {
+           return unDelegate.verifyBlock(transacaoId: transacaoId, ferramenta: ferramenta)
+        }
+        return nil
     }
     
     func goBackRemoveBlock(transacaoId: Int, ferramenta: Ferramenta) {
