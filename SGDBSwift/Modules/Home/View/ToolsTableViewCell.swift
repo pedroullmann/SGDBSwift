@@ -33,12 +33,12 @@ class ToolsTableViewCell: UITableViewCell {
             bloqueio.text = "C"
         } else if viewModel.tool.bloqueio == .exclusivo {
             bloqueio.text = "E"
-            
-            if let unTransacao = viewModel.tool.transacao, !viewModel.isTransaction {
-                blockedBy.text = unTransacao != 0 ? "T\(unTransacao)" : ""
-            }
         } else if viewModel.tool.bloqueio == .desbloqueado {
             bloqueio.text = ""
+        }
+        
+        if let unTransacao = viewModel.tool.transacao, !viewModel.isTransaction {
+            blockedBy.text = unTransacao != 0 ? "T\(unTransacao)" : ""
         }
         
         guard let unSelected = viewModel.isSelected else { return }

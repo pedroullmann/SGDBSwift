@@ -26,6 +26,7 @@ class TransactionsViewController: UIViewController {
     private var transactionIndexPath: IndexPath?
     private let transactioCellHeight: CGFloat = 130
     private let transactionCellIdentifier = "transactionCell"
+    private let listSegueIdentifier = "showList"
     private let detailSegueIdentifier = "goToDetail"
     public var ferramentas: [Ferramenta] = []
     weak var homeDelegate: HomeProtocol?
@@ -103,7 +104,7 @@ class TransactionsViewController: UIViewController {
     }
     
     @objc func listaDeEspera() {
-        
+        performSegue(withIdentifier: listSegueIdentifier, sender: nil)
     }
     
     // MARK:- Navigation

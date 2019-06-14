@@ -33,6 +33,12 @@
 		E75D19AC229CAE6C0007FFEA /* DetailViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = E75D19AB229CAE6C0007FFEA /* DetailViewModel.swift */; };
 		E75D19AF229CAECF0007FFEA /* DetailWorker.swift in Sources */ = {isa = PBXBuildFile; fileRef = E75D19AE229CAECF0007FFEA /* DetailWorker.swift */; };
 		E788943F2294C72B00847F42 /* TransactionTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = E788943E2294C72B00847F42 /* TransactionTableViewCell.swift */; };
+		E7B527C922B3EE5900A26C36 /* ListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E7B527C822B3EE5900A26C36 /* ListViewController.swift */; };
+		E7B527CC22B3FE6900A26C36 /* ListTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = E7B527CB22B3FE6900A26C36 /* ListTableViewCell.swift */; };
+		E7B527CE22B3FEEB00A26C36 /* ListViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = E7B527CD22B3FEEB00A26C36 /* ListViewModel.swift */; };
+		E7B527D122B3FF5600A26C36 /* ListWorker.swift in Sources */ = {isa = PBXBuildFile; fileRef = E7B527D022B3FF5600A26C36 /* ListWorker.swift */; };
+		E7B527D322B3FF6F00A26C36 /* ListCellViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = E7B527D222B3FF6F00A26C36 /* ListCellViewModel.swift */; };
+		E7B527D722B4024200A26C36 /* List.swift in Sources */ = {isa = PBXBuildFile; fileRef = E7B527D622B4024200A26C36 /* List.swift */; };
 		E7BA57302299DC98007C591C /* Networking.swift in Sources */ = {isa = PBXBuildFile; fileRef = E7BA572F2299DC98007C591C /* Networking.swift */; };
 		E7BA57342299FC1E007C591C /* DetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E7BA57332299FC1E007C591C /* DetailViewController.swift */; };
 /* End PBXBuildFile section */
@@ -67,6 +73,12 @@
 		E75D19AB229CAE6C0007FFEA /* DetailViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailViewModel.swift; sourceTree = "<group>"; };
 		E75D19AE229CAECF0007FFEA /* DetailWorker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailWorker.swift; sourceTree = "<group>"; };
 		E788943E2294C72B00847F42 /* TransactionTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TransactionTableViewCell.swift; sourceTree = "<group>"; };
+		E7B527C822B3EE5900A26C36 /* ListViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ListViewController.swift; sourceTree = "<group>"; };
+		E7B527CB22B3FE6900A26C36 /* ListTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ListTableViewCell.swift; sourceTree = "<group>"; };
+		E7B527CD22B3FEEB00A26C36 /* ListViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ListViewModel.swift; sourceTree = "<group>"; };
+		E7B527D022B3FF5600A26C36 /* ListWorker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ListWorker.swift; sourceTree = "<group>"; };
+		E7B527D222B3FF6F00A26C36 /* ListCellViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ListCellViewModel.swift; sourceTree = "<group>"; };
+		E7B527D622B4024200A26C36 /* List.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = List.swift; sourceTree = "<group>"; };
 		E7BA572F2299DC98007C591C /* Networking.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Networking.swift; sourceTree = "<group>"; };
 		E7BA57332299FC1E007C591C /* DetailViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailViewController.swift; sourceTree = "<group>"; };
 		F1419C78E3A5B463D1666B44 /* Pods-SGDBSwift.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-SGDBSwift.release.xcconfig"; path = "Target Support Files/Pods-SGDBSwift/Pods-SGDBSwift.release.xcconfig"; sourceTree = "<group>"; };
@@ -201,6 +213,7 @@
 				E74F88282291E21700A578D3 /* Models */,
 				E75D19A0229C9EE70007FFEA /* Database */,
 				E7BA57312299FBFB007C591C /* Detail */,
+				E7B527C522B3EE1A00A26C36 /* List */,
 				E747580222935B9F00504F87 /* Transactions */,
 				E74F88212291D1B600A578D3 /* Home */,
 			);
@@ -223,6 +236,7 @@
 			children = (
 				E74F88292291E26700A578D3 /* Ferramenta.swift */,
 				E74757FF22935A2F00504F87 /* Transacao.swift */,
+				E7B527D622B4024200A26C36 /* List.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -316,6 +330,50 @@
 			isa = PBXGroup;
 			children = (
 				E75D19AE229CAECF0007FFEA /* DetailWorker.swift */,
+			);
+			path = Worker;
+			sourceTree = "<group>";
+		};
+		E7B527C522B3EE1A00A26C36 /* List */ = {
+			isa = PBXGroup;
+			children = (
+				E7B527C622B3EE2A00A26C36 /* Controller */,
+				E7B527C722B3EE3300A26C36 /* ViewModel */,
+				E7B527CA22B3FE3F00A26C36 /* View */,
+				E7B527CF22B3FF4100A26C36 /* Worker */,
+			);
+			path = List;
+			sourceTree = "<group>";
+		};
+		E7B527C622B3EE2A00A26C36 /* Controller */ = {
+			isa = PBXGroup;
+			children = (
+				E7B527C822B3EE5900A26C36 /* ListViewController.swift */,
+			);
+			path = Controller;
+			sourceTree = "<group>";
+		};
+		E7B527C722B3EE3300A26C36 /* ViewModel */ = {
+			isa = PBXGroup;
+			children = (
+				E7B527CD22B3FEEB00A26C36 /* ListViewModel.swift */,
+				E7B527D222B3FF6F00A26C36 /* ListCellViewModel.swift */,
+			);
+			path = ViewModel;
+			sourceTree = "<group>";
+		};
+		E7B527CA22B3FE3F00A26C36 /* View */ = {
+			isa = PBXGroup;
+			children = (
+				E7B527CB22B3FE6900A26C36 /* ListTableViewCell.swift */,
+			);
+			path = View;
+			sourceTree = "<group>";
+		};
+		E7B527CF22B3FF4100A26C36 /* Worker */ = {
+			isa = PBXGroup;
+			children = (
+				E7B527D022B3FF5600A26C36 /* ListWorker.swift */,
 			);
 			path = Worker;
 			sourceTree = "<group>";
@@ -443,8 +501,10 @@
 				E788943F2294C72B00847F42 /* TransactionTableViewCell.swift in Sources */,
 				E726D8DF229F543B0056F961 /* Collection.swift in Sources */,
 				E7BA57302299DC98007C591C /* Networking.swift in Sources */,
+				E7B527C922B3EE5900A26C36 /* ListViewController.swift in Sources */,
 				E74F88372291ED4000A578D3 /* HomeWorker.swift in Sources */,
 				E747580822935C0900504F87 /* TransactionsViewController.swift in Sources */,
+				E7B527CC22B3FE6900A26C36 /* ListTableViewCell.swift in Sources */,
 				E74F882A2291E26700A578D3 /* Ferramenta.swift in Sources */,
 				E75D19A6229CA0080007FFEA /* DatabaseViewModel.swift in Sources */,
 				E74F880E2291CF0200A578D3 /* HomeViewController.swift in Sources */,
@@ -453,9 +513,13 @@
 				E74F88332291EC3000A578D3 /* HomeViewModel.swift in Sources */,
 				E708001122A08EFA006BD912 /* UIView.swift in Sources */,
 				E74F882F2291EB4C00A578D3 /* DataProvider.swift in Sources */,
+				E7B527D322B3FF6F00A26C36 /* ListCellViewModel.swift in Sources */,
 				E74F88312291EB7100A578D3 /* Dynamic.swift in Sources */,
+				E7B527D122B3FF5600A26C36 /* ListWorker.swift in Sources */,
+				E7B527D722B4024200A26C36 /* List.swift in Sources */,
 				E75D19AC229CAE6C0007FFEA /* DetailViewModel.swift in Sources */,
 				E74F880C2291CF0200A578D3 /* AppDelegate.swift in Sources */,
+				E7B527CE22B3FEEB00A26C36 /* ListViewModel.swift in Sources */,
 				E747580A22935C8000504F87 /* TransactionsWorker.swift in Sources */,
 				E747580022935A2F00504F87 /* Transacao.swift in Sources */,
 				E74F882C2291E62900A578D3 /* ToolsTableViewCell.swift in Sources */,
