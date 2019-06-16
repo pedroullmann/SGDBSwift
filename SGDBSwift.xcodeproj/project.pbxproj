@@ -27,6 +27,12 @@
 		E74F88332291EC3000A578D3 /* HomeViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = E74F88322291EC3000A578D3 /* HomeViewModel.swift */; };
 		E74F88352291ECD000A578D3 /* ToolsCellViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = E74F88342291ECD000A578D3 /* ToolsCellViewModel.swift */; };
 		E74F88372291ED4000A578D3 /* HomeWorker.swift in Sources */ = {isa = PBXBuildFile; fileRef = E74F88362291ED4000A578D3 /* HomeWorker.swift */; };
+		E752BA1122B6A2C1003F1605 /* DeadlockWorker.swift in Sources */ = {isa = PBXBuildFile; fileRef = E752BA1022B6A2C1003F1605 /* DeadlockWorker.swift */; };
+		E752BA1322B6B294003F1605 /* Deadlock.swift in Sources */ = {isa = PBXBuildFile; fileRef = E752BA1222B6B294003F1605 /* Deadlock.swift */; };
+		E752BA1622B6B40A003F1605 /* DeadlockViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E752BA1522B6B40A003F1605 /* DeadlockViewController.swift */; };
+		E752BA1922B6B4F7003F1605 /* DeadlockViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = E752BA1822B6B4F7003F1605 /* DeadlockViewModel.swift */; };
+		E752BA1B22B6B543003F1605 /* DeadlockCellViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = E752BA1A22B6B543003F1605 /* DeadlockCellViewModel.swift */; };
+		E752BA1E22B6B5BE003F1605 /* DeadlockTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = E752BA1D22B6B5BE003F1605 /* DeadlockTableViewCell.swift */; };
 		E75D19A3229C9F650007FFEA /* DatabaseViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E75D19A2229C9F650007FFEA /* DatabaseViewController.swift */; };
 		E75D19A6229CA0080007FFEA /* DatabaseViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = E75D19A5229CA0080007FFEA /* DatabaseViewModel.swift */; };
 		E75D19A9229CA0400007FFEA /* DatabaseWorker.swift in Sources */ = {isa = PBXBuildFile; fileRef = E75D19A8229CA0400007FFEA /* DatabaseWorker.swift */; };
@@ -67,6 +73,12 @@
 		E74F88322291EC3000A578D3 /* HomeViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeViewModel.swift; sourceTree = "<group>"; };
 		E74F88342291ECD000A578D3 /* ToolsCellViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ToolsCellViewModel.swift; sourceTree = "<group>"; };
 		E74F88362291ED4000A578D3 /* HomeWorker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeWorker.swift; sourceTree = "<group>"; };
+		E752BA1022B6A2C1003F1605 /* DeadlockWorker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeadlockWorker.swift; sourceTree = "<group>"; };
+		E752BA1222B6B294003F1605 /* Deadlock.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Deadlock.swift; sourceTree = "<group>"; };
+		E752BA1522B6B40A003F1605 /* DeadlockViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeadlockViewController.swift; sourceTree = "<group>"; };
+		E752BA1822B6B4F7003F1605 /* DeadlockViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeadlockViewModel.swift; sourceTree = "<group>"; };
+		E752BA1A22B6B543003F1605 /* DeadlockCellViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeadlockCellViewModel.swift; sourceTree = "<group>"; };
+		E752BA1D22B6B5BE003F1605 /* DeadlockTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeadlockTableViewCell.swift; sourceTree = "<group>"; };
 		E75D19A2229C9F650007FFEA /* DatabaseViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DatabaseViewController.swift; sourceTree = "<group>"; };
 		E75D19A5229CA0080007FFEA /* DatabaseViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DatabaseViewModel.swift; sourceTree = "<group>"; };
 		E75D19A8229CA0400007FFEA /* DatabaseWorker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DatabaseWorker.swift; sourceTree = "<group>"; };
@@ -213,6 +225,7 @@
 				E74F88282291E21700A578D3 /* Models */,
 				E75D19A0229C9EE70007FFEA /* Database */,
 				E7BA57312299FBFB007C591C /* Detail */,
+				E752BA0E22B69433003F1605 /* Deadlock */,
 				E7B527C522B3EE1A00A26C36 /* List */,
 				E747580222935B9F00504F87 /* Transactions */,
 				E74F88212291D1B600A578D3 /* Home */,
@@ -237,6 +250,7 @@
 				E74F88292291E26700A578D3 /* Ferramenta.swift */,
 				E74757FF22935A2F00504F87 /* Transacao.swift */,
 				E7B527D622B4024200A26C36 /* List.swift */,
+				E752BA1222B6B294003F1605 /* Deadlock.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -282,6 +296,50 @@
 				E74F88362291ED4000A578D3 /* HomeWorker.swift */,
 			);
 			path = Worker;
+			sourceTree = "<group>";
+		};
+		E752BA0E22B69433003F1605 /* Deadlock */ = {
+			isa = PBXGroup;
+			children = (
+				E752BA1422B6B3F3003F1605 /* Controller */,
+				E752BA1722B6B4E3003F1605 /* ViewModel */,
+				E752BA1C22B6B5A1003F1605 /* View */,
+				E752BA0F22B6A2B3003F1605 /* Worker */,
+			);
+			path = Deadlock;
+			sourceTree = "<group>";
+		};
+		E752BA0F22B6A2B3003F1605 /* Worker */ = {
+			isa = PBXGroup;
+			children = (
+				E752BA1022B6A2C1003F1605 /* DeadlockWorker.swift */,
+			);
+			path = Worker;
+			sourceTree = "<group>";
+		};
+		E752BA1422B6B3F3003F1605 /* Controller */ = {
+			isa = PBXGroup;
+			children = (
+				E752BA1522B6B40A003F1605 /* DeadlockViewController.swift */,
+			);
+			path = Controller;
+			sourceTree = "<group>";
+		};
+		E752BA1722B6B4E3003F1605 /* ViewModel */ = {
+			isa = PBXGroup;
+			children = (
+				E752BA1822B6B4F7003F1605 /* DeadlockViewModel.swift */,
+				E752BA1A22B6B543003F1605 /* DeadlockCellViewModel.swift */,
+			);
+			path = ViewModel;
+			sourceTree = "<group>";
+		};
+		E752BA1C22B6B5A1003F1605 /* View */ = {
+			isa = PBXGroup;
+			children = (
+				E752BA1D22B6B5BE003F1605 /* DeadlockTableViewCell.swift */,
+			);
+			path = View;
 			sourceTree = "<group>";
 		};
 		E75D19A0229C9EE70007FFEA /* Database */ = {
@@ -493,6 +551,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				E752BA1322B6B294003F1605 /* Deadlock.swift in Sources */,
 				E74F88352291ECD000A578D3 /* ToolsCellViewModel.swift in Sources */,
 				E7BA57342299FC1E007C591C /* DetailViewController.swift in Sources */,
 				E75D19AF229CAECF0007FFEA /* DetailWorker.swift in Sources */,
@@ -508,10 +567,13 @@
 				E74F882A2291E26700A578D3 /* Ferramenta.swift in Sources */,
 				E75D19A6229CA0080007FFEA /* DatabaseViewModel.swift in Sources */,
 				E74F880E2291CF0200A578D3 /* HomeViewController.swift in Sources */,
+				E752BA1B22B6B543003F1605 /* DeadlockCellViewModel.swift in Sources */,
 				E75D19A3229C9F650007FFEA /* DatabaseViewController.swift in Sources */,
 				E747580C22935C9C00504F87 /* TransactionsViewModel.swift in Sources */,
 				E74F88332291EC3000A578D3 /* HomeViewModel.swift in Sources */,
+				E752BA1922B6B4F7003F1605 /* DeadlockViewModel.swift in Sources */,
 				E708001122A08EFA006BD912 /* UIView.swift in Sources */,
+				E752BA1622B6B40A003F1605 /* DeadlockViewController.swift in Sources */,
 				E74F882F2291EB4C00A578D3 /* DataProvider.swift in Sources */,
 				E7B527D322B3FF6F00A26C36 /* ListCellViewModel.swift in Sources */,
 				E74F88312291EB7100A578D3 /* Dynamic.swift in Sources */,
@@ -519,7 +581,9 @@
 				E7B527D722B4024200A26C36 /* List.swift in Sources */,
 				E75D19AC229CAE6C0007FFEA /* DetailViewModel.swift in Sources */,
 				E74F880C2291CF0200A578D3 /* AppDelegate.swift in Sources */,
+				E752BA1122B6A2C1003F1605 /* DeadlockWorker.swift in Sources */,
 				E7B527CE22B3FEEB00A26C36 /* ListViewModel.swift in Sources */,
+				E752BA1E22B6B5BE003F1605 /* DeadlockTableViewCell.swift in Sources */,
 				E747580A22935C8000504F87 /* TransactionsWorker.swift in Sources */,
 				E747580022935A2F00504F87 /* Transacao.swift in Sources */,
 				E74F882C2291E62900A578D3 /* ToolsTableViewCell.swift in Sources */,

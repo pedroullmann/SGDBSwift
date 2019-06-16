@@ -15,6 +15,8 @@ class DetailViewModel {
     var worker: DetailWorker
     var elementsSection: Int
     var transacao: Dynamic<Transacao>
+    var deadlockWorker: DeadlockWorker
+    var deadlock: Dynamic<Bool>
     
     init(worker: DetailWorker, transacao: Transacao) {
         self.dataProvider = Dynamic(DataProvider())
@@ -23,6 +25,8 @@ class DetailViewModel {
         self.worker = worker
         self.error = Dynamic(nil)
         self.transacao = Dynamic(transacao)
+        self.deadlockWorker = DeadlockWorker()
+        self.deadlock = Dynamic(false)
     }
     
     func mapToToolsCellViewModel(_ ferramentas: [Ferramenta]) -> [ToolsCellViewModel] {
@@ -58,6 +62,29 @@ class DetailViewModel {
         elementsCount -= 1
         transacao.value.visao.remove(at: indexPath.row)
         dataProvider.value.editingStyle = .delete([], [indexPath], false)
+    }
+    
+    func verifyChangedTool(indexPath: IndexPath) -> Bool {
+        if let element = dataProvider.value.elements[elementsSection][safe: indexPath.row],
+            let unBlock = element.tool.bloqueio {
+            return unBlock == .exclusivo
+        }
+        
+        return false
+    }
+    
+    func verifyDeadlock() {
+        deadlockWorker.verifyDeadlock { [weak self] result in
+            guard let strongSelf = self else { return }
+            DispatchQueue.main.async {
+                switch result {
+                case .success:
+                    strongSelf.deadlock.value = true
+                case .error:
+                    strongSelf.deadlock.value = false
+                }
+            }
+        }
     }
 }
 

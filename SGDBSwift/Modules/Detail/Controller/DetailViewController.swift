@@ -14,10 +14,12 @@ class DetailViewController: UIViewController {
     @IBOutlet weak var tableView: UITableView!
     @IBOutlet weak var descricao: UITextField!
     @IBOutlet weak var container: UIView!
+    @IBOutlet weak var remove: UIButton!
     
     //MARK :- Properties
     private let headerCellIdentifier = "headerCell"
     private let toolsCellIdentifier = "toolsCell"
+    private let goToDeadlockIdentifier = "toDeadlock"
     private let headerCellHeight: CGFloat = 45
     private let detailWorker: DetailWorker = DetailWorker()
     private var toolIndexPath: IndexPath?
@@ -101,32 +103,31 @@ class DetailViewController: UIViewController {
             guard let strongSelf = self else { return }
             strongSelf.transacao = transacao
         }
+        
+        viewModel.deadlock.bind { [weak self] deadlock in
+            guard let strongSelf = self else { return }
+            if deadlock {
+                strongSelf.performSegue(withIdentifier: strongSelf.goToDeadlockIdentifier, sender: nil)
+            }
+        }
     }
     
     private func configBlockedBy() {
         guard let unTransacao = transacao, let blockedBy = unTransacao.blockedBy,
             blockedBy != unTransacao.id, let unDelegate = transactionsDelegate else { return }
+
+        let list = List(id: 0, transacaoBloqueada: unTransacao.id, transacaoLiberada: blockedBy)
+        unDelegate.createBlockList(list: list)
         
-        if let unIndex = unTransacao.rowSelected,
-            unDelegate.verifyBlock(transacaoId: unTransacao.id,
-                                   ferramenta: unTransacao.visao[unIndex]) == nil {
-            unTransacao.blockedBy = nil
-            
-            reloadTransaction()
-            fetchData()
-        } else {
-            let list = List(id: 0, transacaoBloqueada: unTransacao.id, transacaoLiberada: blockedBy, deadlock: false)
-            unDelegate.createBlockList(list: list)
-            
-            let alert = UIAlertController(title: "Bloqueio", message: "Este registro está sendo bloqueado pela transação \(blockedBy), vá para a lista de espera para desbloquea-lo.", preferredStyle: .alert)
-            
-            let ok = UIAlertAction(title: "OK", style: .default, handler: { action in
-                self.navigationController?.popViewController(animated: true)
-            })
-            
-            alert.addAction(ok)
-            present(alert, animated: true)
-        }
+        let alert = UIAlertController(title: "Bloqueio", message: "Este registro está sendo bloqueado pela transação \(blockedBy), vá para a lista de espera para desbloquea-lo.", preferredStyle: .alert)
+
+        let ok = UIAlertAction(title: "OK", style: .default, handler: { action in
+            self.navigationController?.popViewController(animated: true)
+            self.viewModel.verifyDeadlock()
+        })
+
+        alert.addAction(ok)
+        present(alert, animated: true)
     }
     
     private func configNavigation() {
@@ -198,17 +199,30 @@ class DetailViewController: UIViewController {
     @IBAction func remover(_ sender: Any) {
         //TODO: Salvar o remover no log
         guard let unIndexPath = toolIndexPath, toolModel != nil, let unTransaction = transacao else { return }
-        if let unDelegate = transactionsDelegate {
-            unTransaction.visao[unIndexPath.row].transacao = 0
-            unDelegate.goBackRemoveBlock(transacaoId: unTransaction.id, ferramenta: unTransaction.visao[unIndexPath.row])
+        
+        if let unIndexPath = toolIndexPath, viewModel.verifyChangedTool(indexPath: unIndexPath) {
+            let alert = UIAlertController(title: "Atenção", message: "Este registro foi alterado, não será possível remove-lo.", preferredStyle: .alert)
+            
+            let ok = UIAlertAction(title: "OK", style: .default, handler: { action in
+                return
+            })
+            
+            alert.addAction(ok)
+            present(alert, animated: true)
+            return
+        } else {
+            if let unDelegate = transactionsDelegate {
+                unTransaction.visao[unIndexPath.row].transacao = 0
+                unDelegate.goBackRemoveBlock(transacaoId: unTransaction.id, ferramenta: unTransaction.visao[unIndexPath.row])
+            }
+            
+            viewModel.removeToolCell(unIndexPath)
+            cleanComponents()
+            
+            unTransaction.rowSelected = nil
+            
+            reloadTransaction()
         }
-        
-        viewModel.removeToolCell(unIndexPath)
-        cleanComponents()
-        
-        unTransaction.rowSelected = nil
-        
-        reloadTransaction()
     }
     
     @IBAction func commit(_ sender: Any) {
@@ -220,6 +234,14 @@ class DetailViewController: UIViewController {
         guard let unTransaction = transacao else { return }
         unTransaction.transacao_estado = .rollback
         _ = navigationController?.popViewController(animated: true)
+    }
+    
+    //MARK :- Navigation
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        if segue.identifier == goToDeadlockIdentifier,
+            let vc = segue.destination as? DeadlockViewController {
+            vc.deadlockDelegate = self
+        }
     }
 }
 
@@ -279,7 +301,7 @@ extension DetailViewController: UITableViewDelegate {
             let cell = tableView.cellForRow(at: indexPath),
             let unDelegate = transactionsDelegate else { return nil }
         let cellViewModel = viewModel[indexPath.section][indexPath.row]
-        
+    
         if cell.isSelected {
             // Deselect Rows
             tableView.deselectRow(at: indexPath, animated: false)
@@ -289,6 +311,7 @@ extension DetailViewController: UITableViewDelegate {
             descricao.text = ""
             
             if let bloq = unTransaction.visao[indexPath.row].bloqueio, bloq == .exclusivo {
+                unTransaction.visao[indexPath.row].transacao = unTransaction.id
                 modifiedRow(ferramenta: unTransaction.visao[indexPath.row], blockChanged: true)
             } else {
                 unTransaction.visao[indexPath.row].transacao = 0
@@ -300,6 +323,7 @@ extension DetailViewController: UITableViewDelegate {
                 indexs.forEach { index in
                     tableView.deselectRow(at: index, animated: false)
                     if let bloq = unTransaction.visao[index.row].bloqueio, bloq == .exclusivo {
+                        unTransaction.visao[indexPath.row].transacao = unTransaction.id
                         return
                     }
                     unTransaction.visao[indexPath.row].transacao = 0
@@ -349,3 +373,9 @@ extension DetailViewController: UITableViewDelegate {
     }
 }
 
+//MARK :- CellDeadLockProtocol
+extension DeadlockViewController: DeadlockProtocol {
+    func tappedRollback(transacao: Int) {
+        
+    }
+}

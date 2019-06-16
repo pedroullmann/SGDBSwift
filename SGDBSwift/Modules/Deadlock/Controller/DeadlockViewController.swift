@@ -1,37 +1,41 @@
 //
-//  ListViewController.swift
+//  DeadlockViewController.swift
 //  SGDBSwift
 //
-//  Created by Pedro Ullmann on 6/14/19.
+//  Created by Pedro Ullmann on 6/16/19.
 //  Copyright © 2019 Pedro Ullmann. All rights reserved.
 //
 
 import UIKit
 
-class ListViewController: UIViewController {
+protocol DeadlockProtocol: class {
+    func tappedRollback(transacao: Int)
+}
+
+class DeadlockViewController: UIViewController {
     
     // MARK:- Outlets
     @IBOutlet weak var tableView: UITableView!
     
     // MARK:- Properties
-    private let listWorker: ListWorker = ListWorker()
-    private let listCellIdentifier = "listCell"
+    private let deadlockWorker: DeadlockWorker = DeadlockWorker()
     private let deadlockCellIdentifier = "deadlockCell"
-    private let listCellHeight: CGFloat = 115
-    private var viewModel: ListViewModel!
+    private let deadlockCellHeight: CGFloat = 140
+    private var transacaoRollback: Int = 0
+    private var viewModel: DeadlockViewModel!
+    weak var deadlockDelegate: DeadlockProtocol?
     
     //MARK :- Lifecycle
     override func viewDidLoad() {
         super.viewDidLoad()
         configBind()
-        configNavigation()
         configTableView()
         fetchData()
     }
     
     //MARK :- Functions
     private func configBind() {
-        viewModel = ListViewModel(worker: listWorker)
+        viewModel = DeadlockViewModel(worker: deadlockWorker)
         
         viewModel.dataProvider.bind { [weak self] dataProvider in
             guard let strongSelf = self else { return }
@@ -64,11 +68,11 @@ class ListViewController: UIViewController {
                 }
             }
         }
-    }
-    
-    private func configNavigation() {
-        let exit = UIBarButtonItem(barButtonSystemItem: .cancel, target: self, action: #selector(exitAction))
-        navigationItem.leftBarButtonItem = exit
+        
+        viewModel.removed.bind { [weak self] removed in
+            guard let strongSelf = self, let unDelegate = strongSelf.deadlockDelegate, removed else { return }
+            unDelegate.tappedRollback(transacao: strongSelf.transacaoRollback)
+        }
     }
     
     private func configTableView() {
@@ -80,14 +84,10 @@ class ListViewController: UIViewController {
     private func fetchData() {
         viewModel.fetch()
     }
-    
-    @objc func exitAction() {
-        dismiss(animated: true, completion: nil)
-    }
 }
 
 //MARK :- UITableViewDataSource
-extension ListViewController: UITableViewDataSource {
+extension DeadlockViewController: UITableViewDataSource {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return viewModel.getElementsCount()
     }
@@ -95,19 +95,29 @@ extension ListViewController: UITableViewDataSource {
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cellViewModel = viewModel[indexPath.section][indexPath.row]
         
-        guard let cell = tableView.dequeueReusableCell(withIdentifier: listCellIdentifier, for: indexPath) as? ListTableViewCell  else {
+        guard let cell = tableView.dequeueReusableCell(withIdentifier: deadlockCellIdentifier, for: indexPath) as? DeadlockTableViewCell  else {
             return UITableViewCell()
         }
         
         cell.selectionStyle = .none
         cell.viewModel = cellViewModel
+        cell.cellDeadlockDelegate = self
         return cell
     }
 }
 
 //MARK :- UITableViewDelegate
-extension ListViewController: UITableViewDelegate {
+extension DeadlockViewController: UITableViewDelegate {
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        return listCellHeight
+        return deadlockCellHeight
     }
 }
+
+//MARK :- CellDeadLockProtocol
+extension DeadlockViewController: CellDeadlockProtocol {
+    func tappedRollback(deadlock: Deadlock, transacao: Int) {
+        transacaoRollback = transacao
+        viewModel.removeDeadlock(deadlock)
+    }
+}
+
