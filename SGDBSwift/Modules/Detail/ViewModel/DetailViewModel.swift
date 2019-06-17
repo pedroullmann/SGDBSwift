@@ -15,6 +15,7 @@ class DetailViewModel {
     var worker: DetailWorker
     var elementsSection: Int
     var transacao: Dynamic<Transacao>
+    var rollbackTransacao: Dynamic<Transacao?>
     var deadlockWorker: DeadlockWorker
     var deadlock: Dynamic<Bool>
     
@@ -24,6 +25,7 @@ class DetailViewModel {
         self.elementsSection = 0
         self.worker = worker
         self.error = Dynamic(nil)
+        self.rollbackTransacao = Dynamic(nil)
         self.transacao = Dynamic(transacao)
         self.deadlockWorker = DeadlockWorker()
         self.deadlock = Dynamic(false)
@@ -82,6 +84,20 @@ class DetailViewModel {
                     strongSelf.deadlock.value = true
                 case .error:
                     strongSelf.deadlock.value = false
+                }
+            }
+        }
+    }
+    
+    func rollbackTransaction(transacaoId: Int) {
+        worker.rollbackTransaction(transacaoId: transacaoId) { [weak self] result in
+            guard let strongSelf = self else { return }
+            DispatchQueue.main.async {
+                switch result {
+                case .success(let transacao):
+                    strongSelf.rollbackTransacao.value = transacao
+                case .error:
+                    break
                 }
             }
         }

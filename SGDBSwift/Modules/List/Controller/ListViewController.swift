@@ -8,6 +8,10 @@
 
 import UIKit
 
+protocol ListProtocol: class {
+    func tappedRollback(list: List, transacao: Int)
+}
+
 class ListViewController: UIViewController {
     
     // MARK:- Outlets
@@ -19,6 +23,7 @@ class ListViewController: UIViewController {
     private let deadlockCellIdentifier = "deadlockCell"
     private let listCellHeight: CGFloat = 115
     private var viewModel: ListViewModel!
+    weak var listDelegate: ListProtocol?
     
     //MARK :- Lifecycle
     override func viewDidLoad() {
@@ -100,6 +105,7 @@ extension ListViewController: UITableViewDataSource {
         }
         
         cell.selectionStyle = .none
+        cell.listCellDelegate = self
         cell.viewModel = cellViewModel
         return cell
     }
@@ -109,5 +115,16 @@ extension ListViewController: UITableViewDataSource {
 extension ListViewController: UITableViewDelegate {
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         return listCellHeight
+    }
+}
+
+//MARK:- ListCellProtocol
+extension ListViewController: ListCellProtocol {
+    func tappedRollback(list: List, transacao: Int) {
+        viewModel.rollbackTransaction(transacao: transacao)
+        
+        if let unDelegate = listDelegate {
+            unDelegate.tappedRollback(list: list, transacao: transacao)
+        }
     }
 }

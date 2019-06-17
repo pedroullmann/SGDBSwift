@@ -110,10 +110,17 @@ class DetailViewController: UIViewController {
                 strongSelf.performSegue(withIdentifier: strongSelf.goToDeadlockIdentifier, sender: nil)
             }
         }
+        
+        viewModel.rollbackTransacao.bind { [weak self] rollbackTransacao in
+            guard let strongSelf = self,
+                let unDelegate = strongSelf.transactionsDelegate,
+                let unRollback = rollbackTransacao else { return }
+            unDelegate.rollbackTransaction(transacao: unRollback)
+        }
     }
     
     private func configBlockedBy() {
-        guard let unTransacao = transacao, let blockedBy = unTransacao.blockedBy,
+        guard let unTransacao = transacao, let blockedBy = unTransacao.blockedBy, blockedBy != 0,
             blockedBy != unTransacao.id, let unDelegate = transactionsDelegate else { return }
 
         let list = List(id: 0, transacaoBloqueada: unTransacao.id, transacaoLiberada: blockedBy)
@@ -233,13 +240,15 @@ class DetailViewController: UIViewController {
         //TODO: Salvar o rollback no log
         guard let unTransaction = transacao else { return }
         unTransaction.transacao_estado = .rollback
+        viewModel.rollbackTransaction(transacaoId: unTransaction.id)
         _ = navigationController?.popViewController(animated: true)
     }
     
     //MARK :- Navigation
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         if segue.identifier == goToDeadlockIdentifier,
-            let vc = segue.destination as? DeadlockViewController {
+            let nav = segue.destination as? UINavigationController,
+            let vc = nav.viewControllers.first as? DeadlockViewController {
             vc.deadlockDelegate = self
         }
     }
@@ -374,8 +383,8 @@ extension DetailViewController: UITableViewDelegate {
 }
 
 //MARK :- CellDeadLockProtocol
-extension DeadlockViewController: DeadlockProtocol {
+extension DetailViewController: DeadlockProtocol {
     func tappedRollback(transacao: Int) {
-        
+        viewModel.rollbackTransaction(transacaoId: transacao)
     }
 }

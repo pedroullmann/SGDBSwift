@@ -9,7 +9,7 @@
 import Foundation
 
 protocol DetailWorkerProtocol {
-    //func getBancoTemporario(completion: @escaping (Result<[Ferramenta]>) -> ())
+    func rollbackTransaction(transacaoId: Int, completion: @escaping (Result<Transacao>) -> ())
 }
 
 class DetailWorker: DetailWorkerProtocol {
@@ -21,6 +21,25 @@ class DetailWorker: DetailWorkerProtocol {
     }
     
     //MARK :- Funcoes
-    
+    func rollbackTransaction(transacaoId: Int, completion: @escaping (Result<Transacao>) -> ()) {
+        let parameters : [String : Any] = [:]
+        defaultNetworking.request("transacoes/\(transacaoId)",
+                                  method: .post,
+                                  encoding: .default,
+                                  parameters: parameters) { result in
+            switch result {
+            case .success(let data):
+                do {
+                    let decoder = JSONDecoder()
+                    let transacao = try decoder.decode(Transacao.self, from: data!)
+                    completion(Result.success(transacao))
+                } catch let error {
+                    completion(Result.error(error))
+                }
+            case .error(let error):
+                completion(Result.error(error))
+            }
+        }
+    }
 }
 

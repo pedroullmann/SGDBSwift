@@ -8,6 +8,10 @@
 
 import UIKit
 
+protocol ListCellProtocol: class {
+    func tappedRollback(list: List, transacao: Int)
+}
+
 class ListTableViewCell: UITableViewCell {
 
     // MARK:- Outlets
@@ -15,6 +19,7 @@ class ListTableViewCell: UITableViewCell {
     @IBOutlet weak var transacaoLiberada: UILabel!
     
     // MARK:- Properties
+    weak var listCellDelegate: ListCellProtocol?
     public var viewModel: ListCellViewModel! {
         didSet {
             configCell()
@@ -29,6 +34,9 @@ class ListTableViewCell: UITableViewCell {
     
     @IBAction func rollback(_ sender: Any) {
         //TODO: Logs
+        if let unDelegate = listCellDelegate {
+            unDelegate.tappedRollback(list: viewModel.list, transacao: viewModel.list.transacaoLiberada)
+        }
     }
     
     @IBAction func commit(_ sender: Any) {

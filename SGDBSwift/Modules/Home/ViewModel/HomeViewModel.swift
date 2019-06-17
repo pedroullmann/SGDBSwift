@@ -89,6 +89,17 @@ class HomeViewModel {
             dataProvider.value.editingStyle = .reload(cell, indexPath)
         }
     }
+    
+    func rollbackTransaction(transacaoId: Int) {
+        dataProvider.value.elements[elementsSection].forEach { tool in
+            if let unTransacao = tool.tool.transacao, unTransacao == transacaoId {
+                tool.tool.bloqueio = .desbloqueado
+                tool.tool.transacao = 0
+            }
+        }
+        
+        dataProvider.value.editingStyle = .reloadAll
+    }
 }
 
 extension HomeViewModel: TableViewViewModelProtocol {

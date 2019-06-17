@@ -12,6 +12,7 @@ protocol TransactionsProtocol: class {
     func goBackRowModified(ferramenta: Ferramenta, blockChanged: Bool)
     func verifyBlock(transacaoId: Int, ferramenta: Ferramenta) -> Int?
     func goBackRemoveBlock(transacaoId: Int, ferramenta: Ferramenta)
+    func rollbackTransaction(transacao: Transacao)
     func createBlockList(list: List)
     func goBack(_ indexPath: IndexPath, _ transaction: Transacao)
 }
@@ -81,6 +82,20 @@ class TransactionsViewController: UIViewController {
             guard let strongSelf = self else { return }
             strongSelf.navigationItem.rightBarButtonItem?.isEnabled = enabled
         }
+        
+        viewModel.rollbackTransaction.bind { [weak self] rollbackTransaction in
+            guard let strongSelf = self,
+                let unDelegate = strongSelf.homeDelegate,
+                let unTransaction = rollbackTransaction else { return }
+            unDelegate.rollbackTransaction(transactionId: unTransaction.id)
+        }
+        
+        viewModel.reloadTransactions.bind { [weak self] reloadTransactions in
+            guard let strongSelf = self else { return }
+            if reloadTransactions {
+                strongSelf.fetchData()
+            }
+        }
     }
     
     private func configNavigation() {
@@ -119,6 +134,12 @@ class TransactionsViewController: UIViewController {
                 vc.transactionIndexPath = unIndexPath
                 vc.transactionsDelegate = self
             }
+        }
+        
+        if segue.identifier == listSegueIdentifier,
+            let nav = segue.destination as? UINavigationController,
+            let vc = nav.viewControllers.first as? ListViewController {
+            vc.listDelegate = self
         }
     }
 }
@@ -181,6 +202,10 @@ extension TransactionsViewController: TransactionsProtocol {
         }
     }
     
+    func rollbackTransaction(transacao: Transacao) {
+        viewModel.rollbackTransaction(transacao)
+    }
+    
     func createBlockList(list: List) {
         viewModel.createBlock(list: list)
     }
@@ -191,5 +216,12 @@ extension TransactionsViewController: TransactionsProtocol {
         let editedTransaction = transaction
 
         viewModel.reloadTransactionCell(editedTransaction, indexPath)
+    }
+}
+
+//MARK :- ListProtocol
+extension TransactionsViewController: ListProtocol {
+    func tappedRollback(list: List, transacao: Int) {
+        viewModel.rollbackTransaction(transacaoId: transacao)
     }
 }

@@ -31,6 +31,37 @@ class ListViewModel {
         
         return result
     }
+    
+    func rollbackTransaction(transacao: Int) {
+        guard let unIndex = getIndexOfViewModel(by: transacao) else { return }
+        let indexPath = IndexPath(row: unIndex, section: elementsSection)
+        
+        if let element = dataProvider.value.elements[elementsSection][safe: unIndex]?.list {
+            worker.removeBlock(bloqueadaId: element.transacaoBloqueada, liberada: transacao) { [weak self] result in
+                guard let strongSelf = self else { return }
+                DispatchQueue.main.async {
+                    switch result {
+                    case .success:
+                        strongSelf.elementsCount -= 1
+                        strongSelf.dataProvider.value.editingStyle = .delete([], [indexPath], false)
+                    case .error:
+                        break
+                    }
+                }
+            }
+        }
+    }
+    
+    func getIndexOfViewModel(by transacao: Int) -> Array<ListCellViewModel>.Index? {
+        guard elementsSection < dataProvider.value.elements.count else { return nil }
+        let indexRow = dataProvider.value.elements[elementsSection].firstIndex { (viewModel) -> Bool in
+            if viewModel.list.transacaoLiberada == transacao {
+                return true
+            }
+            return false
+        }
+        return indexRow
+    }
 }
 
 extension ListViewModel: TableViewViewModelProtocol {

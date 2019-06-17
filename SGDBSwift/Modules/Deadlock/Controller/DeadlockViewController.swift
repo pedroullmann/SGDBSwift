@@ -72,6 +72,7 @@ class DeadlockViewController: UIViewController {
         viewModel.removed.bind { [weak self] removed in
             guard let strongSelf = self, let unDelegate = strongSelf.deadlockDelegate, removed else { return }
             unDelegate.tappedRollback(transacao: strongSelf.transacaoRollback)
+            strongSelf.dismiss(animated: true, completion: nil)
         }
     }
     

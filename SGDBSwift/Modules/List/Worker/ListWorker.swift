@@ -11,6 +11,7 @@ import Foundation
 protocol ListWorkerProtocol {
     func createBlock(list: List, completion: @escaping (Result<Bool>) -> ())
     func getListBlock(completion: @escaping (Result<[List]>) -> ())
+    func removeBlock(bloqueadaId: Int, liberada: Int, completion: @escaping (Result<Bool>) -> ())
 }
 
 class ListWorker: ListWorkerProtocol {
@@ -56,6 +57,22 @@ class ListWorker: ListWorkerProtocol {
                 } catch let error {
                     completion(Result.error(error))
                 }
+            case .error(let error):
+                completion(Result.error(error))
+            }
+        }
+    }
+    
+    func removeBlock(bloqueadaId: Int, liberada: Int, completion: @escaping (Result<Bool>) -> ()) {
+        let parameters: [String : Any] = [:]
+        
+        defaultNetworking.request("lista/\(bloqueadaId)/\(liberada)",
+                                  method: .post,
+                                  encoding: .json,
+                                  parameters: parameters) { result in
+            switch result {
+            case .success:
+                completion(Result.success(true))
             case .error(let error):
                 completion(Result.error(error))
             }
