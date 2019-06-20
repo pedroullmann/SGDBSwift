@@ -16,8 +16,6 @@ enum TipoTransacao: Int, Codable {
     case rollback
     case checkpoint
     case instanciada
-    case bloqueio
-    case deadlock
     
     init(from decoder: Decoder) throws {
         let id = try decoder.singleValueContainer().decode(Int.self)

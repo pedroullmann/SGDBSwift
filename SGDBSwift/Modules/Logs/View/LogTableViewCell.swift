@@ -29,14 +29,10 @@ class LogTableViewCell: UITableViewCell {
         switch viewModel.log.tipo {
         case .alteração:
             tipo.text = "Alteração"
-        case .bloqueio:
-            tipo.text = "Bloqueio"
         case .checkpoint:
             tipo.text = "Checkpoint"
         case .commit:
             tipo.text = "Commit"
-        case .deadlock:
-            tipo.text = "Deadlock"
         case .inserção:
             tipo.text = "Inserção"
         case .instanciada:

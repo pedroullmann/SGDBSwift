@@ -146,7 +146,7 @@ extension TransactionsViewModel: TableViewViewModelProtocol {
                     let elements = strongSelf.mapToTransactionCellViewModel([transaction])
                     strongSelf.dataProvider.value.editingStyle = .insert([elements.last!], [indexPath], false)
                     
-                    let log = Log(id: 0, sessao: transaction.id, tipo: .instanciada, acao: "acabou de ser instanciada")
+                    let log = Log(id: 0, sessao: transaction.id, tipo: .instanciada, acao: "-")
                     strongSelf.saveLog(log: log)
                 case .error(let error):
                     strongSelf.elementsCount -= 1

@@ -84,9 +84,6 @@ class DetailViewModel {
                 switch result {
                 case .success:
                     strongSelf.deadlock.value = true
-                    
-                    let log = Log(id: 0, sessao: strongSelf.transacao.value.id, tipo: .deadlock, acao: "transacao em deadlock")
-                    strongSelf.saveLog(log: log)
                 case .error:
                     strongSelf.deadlock.value = false
                 }

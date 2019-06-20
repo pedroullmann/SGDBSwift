@@ -128,10 +128,6 @@ class DetailViewController: UIViewController {
         
         let alert = UIAlertController(title: "Bloqueio", message: "Este registro está sendo bloqueado pela transação \(blockedBy), vá para a lista de espera para desbloquea-lo.", preferredStyle: .alert)
 
-        
-        let log = Log(id: 0, sessao: unTransacao.id, tipo: .bloqueio, acao: "transação bloqueada pela sessão \(blockedBy)")
-        viewModel.saveLog(log: log)
-        
         let ok = UIAlertAction(title: "OK", style: .default, handler: { action in
             self.navigationController?.popViewController(animated: true)
             self.viewModel.verifyDeadlock()
@@ -253,7 +249,7 @@ class DetailViewController: UIViewController {
         unTransaction.transacao_estado = .rollback
         viewModel.rollbackTransaction(transacaoId: unTransaction.id)
         
-        let log = Log(id: 0, sessao: unTransaction.id, tipo: .rollback, acao: "transação realizou rollback")
+        let log = Log(id: 0, sessao: unTransaction.id, tipo: .rollback, acao: "-")
         viewModel.saveLog(log: log)
         _ = navigationController?.popViewController(animated: true)
     }
@@ -334,7 +330,6 @@ extension DetailViewController: UITableViewDelegate {
             descricao.text = ""
             
             if let bloq = unTransaction.visao[indexPath.row].bloqueio, bloq == .exclusivo {
-                unTransaction.visao[indexPath.row].transacao = unTransaction.id
                 modifiedRow(ferramenta: unTransaction.visao[indexPath.row], blockChanged: true)
             } else {
                 unTransaction.visao[indexPath.row].transacao = 0
@@ -342,6 +337,9 @@ extension DetailViewController: UITableViewDelegate {
                 modifiedRow(ferramenta: unTransaction.visao[indexPath.row], blockChanged: false)
             }
         } else {
+            
+            unTransaction.visao[indexPath.row].transacao = unTransaction.id
+            
             if let indexs = tableView.indexPathsForSelectedRows {
                 indexs.forEach { index in
                     tableView.deselectRow(at: index, animated: false)
@@ -349,7 +347,7 @@ extension DetailViewController: UITableViewDelegate {
                         unTransaction.visao[indexPath.row].transacao = unTransaction.id
                         return
                     }
-                    unTransaction.visao[indexPath.row].transacao = 0
+                    unTransaction.visao[index.row].transacao = 0
                     unTransaction.visao[index.row].bloqueio = .desbloqueado
                     modifiedRow(ferramenta: unTransaction.visao[index.row], blockChanged: false)
                 }

@@ -40,7 +40,8 @@ extension LogViewModel: TableViewViewModelProtocol {
             DispatchQueue.main.async {
                 switch result {
                 case .success(let logs):
-                    let elements = strongSelf.mapToLogCellViewModel(logs)
+                    let orderedLogs = logs.sorted(by: { $0.id < $1.id })
+                    let elements = strongSelf.mapToLogCellViewModel(orderedLogs)
                     strongSelf.elementsCount = logs.count
                     strongSelf.dataProvider.value = DataProvider(withElements: [elements])
                 case .error(let error):
