@@ -17,6 +17,7 @@ class DetailViewModel {
     var transacao: Dynamic<Transacao>
     var rollbackTransacao: Dynamic<Transacao?>
     var deadlockWorker: DeadlockWorker
+    var logWorker: LogsWorker
     var deadlock: Dynamic<Bool>
     
     init(worker: DetailWorker, transacao: Transacao) {
@@ -28,6 +29,7 @@ class DetailViewModel {
         self.rollbackTransacao = Dynamic(nil)
         self.transacao = Dynamic(transacao)
         self.deadlockWorker = DeadlockWorker()
+        self.logWorker = LogsWorker()
         self.deadlock = Dynamic(false)
     }
     
@@ -82,6 +84,9 @@ class DetailViewModel {
                 switch result {
                 case .success:
                     strongSelf.deadlock.value = true
+                    
+                    let log = Log(id: 0, sessao: strongSelf.transacao.value.id, tipo: .deadlock, acao: "transacao em deadlock")
+                    strongSelf.saveLog(log: log)
                 case .error:
                     strongSelf.deadlock.value = false
                 }
@@ -100,6 +105,12 @@ class DetailViewModel {
                     break
                 }
             }
+        }
+    }
+    
+    func saveLog(log: Log) {
+        logWorker.createLog(log: log) { result in
+            switch result { default: break }
         }
     }
 }

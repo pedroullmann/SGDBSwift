@@ -128,6 +128,10 @@ class DetailViewController: UIViewController {
         
         let alert = UIAlertController(title: "Bloqueio", message: "Este registro está sendo bloqueado pela transação \(blockedBy), vá para a lista de espera para desbloquea-lo.", preferredStyle: .alert)
 
+        
+        let log = Log(id: 0, sessao: unTransacao.id, tipo: .bloqueio, acao: "transação bloqueada pela sessão \(blockedBy)")
+        viewModel.saveLog(log: log)
+        
         let ok = UIAlertAction(title: "OK", style: .default, handler: { action in
             self.navigationController?.popViewController(animated: true)
             self.viewModel.verifyDeadlock()
@@ -178,11 +182,12 @@ class DetailViewController: UIViewController {
     
     //MARK :- Actions
     @IBAction func inserir(_ sender: Any) {
-        //TODO: Salvar o inserir no log
-        guard let unDescricao = descricao.text else { return }
+        guard let unDescricao = descricao.text, let unTransacao = transacao else { return }
         let removedSpaces = unDescricao.trimmingCharacters(in: .whitespaces)
         
         if !removedSpaces.isEmpty {
+            let log = Log(id: 0, sessao: unTransacao.id, tipo: .inserção, acao: "registro \(unDescricao) foi inserido")
+            viewModel.saveLog(log: log)
             viewModel.insertToolCell(unDescricao)
             cleanComponents()
             reloadTransaction()
@@ -190,11 +195,12 @@ class DetailViewController: UIViewController {
     }
     
     @IBAction func alterar(_ sender: Any) {
-        //TODO: Salvar o alterar no log
         guard let unIndexPath = toolIndexPath, let unTool = toolModel, let unDescricao = descricao.text, let unTransaction = transacao else { return }
         let removedSpaces = unDescricao.trimmingCharacters(in: .whitespaces)
         
         if !removedSpaces.isEmpty {
+            let log = Log(id: 0, sessao: unTransaction.id, tipo: .alteração, acao: "registro \(unTool.descricao) foi alterado para \(unDescricao)")
+            viewModel.saveLog(log: log)
             viewModel.reloadToolCell(unIndexPath, ferramenta: unTool, descricao: unDescricao)
             cleanComponents()
             reloadTransaction()
@@ -204,7 +210,6 @@ class DetailViewController: UIViewController {
     }
     
     @IBAction func remover(_ sender: Any) {
-        //TODO: Salvar o remover no log
         guard let unIndexPath = toolIndexPath, toolModel != nil, let unTransaction = transacao else { return }
         
         if let unIndexPath = toolIndexPath, viewModel.verifyChangedTool(indexPath: unIndexPath) {
@@ -223,6 +228,13 @@ class DetailViewController: UIViewController {
                 unDelegate.goBackRemoveBlock(transacaoId: unTransaction.id, ferramenta: unTransaction.visao[unIndexPath.row])
             }
             
+            var auxilary = ""
+            if let unTool = toolModel {
+                auxilary = "registro \(unTool.descricao) foi removido"
+            }
+            let log = Log(id: 0, sessao: unTransaction.id, tipo: .remoção, acao: auxilary)
+            
+            viewModel.saveLog(log: log)
             viewModel.removeToolCell(unIndexPath)
             cleanComponents()
             
@@ -237,10 +249,12 @@ class DetailViewController: UIViewController {
     }
     
     @IBAction func rollback(_ sender: Any) {
-        //TODO: Salvar o rollback no log
         guard let unTransaction = transacao else { return }
         unTransaction.transacao_estado = .rollback
         viewModel.rollbackTransaction(transacaoId: unTransaction.id)
+        
+        let log = Log(id: 0, sessao: unTransaction.id, tipo: .rollback, acao: "transação realizou rollback")
+        viewModel.saveLog(log: log)
         _ = navigationController?.popViewController(animated: true)
     }
     

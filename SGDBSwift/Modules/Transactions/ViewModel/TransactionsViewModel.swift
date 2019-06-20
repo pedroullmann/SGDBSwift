@@ -19,6 +19,7 @@ class TransactionsViewModel {
     var reloadTransactions: Dynamic<Bool>
     var workerDetail: DetailWorker
     var buttonEnabled: Dynamic<Bool>
+    var logWorker: LogsWorker
     var listWorker: ListWorker
     
     init(worker: TransactionsWorker, ferramentas: [Ferramenta]) {
@@ -32,6 +33,7 @@ class TransactionsViewModel {
         self.rollbackTransaction = Dynamic(nil)
         self.workerDetail = DetailWorker()
         self.error = Dynamic(nil)
+        self.logWorker = LogsWorker()
         self.listWorker = ListWorker()
     }
     
@@ -106,6 +108,12 @@ class TransactionsViewModel {
             }
         }
     }
+    
+    func saveLog(log: Log) {
+        logWorker.createLog(log: log) { result in
+            switch result { default: break }
+        }
+    }
 }
 
 extension TransactionsViewModel: TableViewViewModelProtocol {
@@ -137,6 +145,9 @@ extension TransactionsViewModel: TableViewViewModelProtocol {
                     let indexPath = IndexPath(row: strongSelf.elementsCount - 1, section: 0)
                     let elements = strongSelf.mapToTransactionCellViewModel([transaction])
                     strongSelf.dataProvider.value.editingStyle = .insert([elements.last!], [indexPath], false)
+                    
+                    let log = Log(id: 0, sessao: transaction.id, tipo: .instanciada, acao: "acabou de ser instanciada")
+                    strongSelf.saveLog(log: log)
                 case .error(let error):
                     strongSelf.elementsCount -= 1
                     strongSelf.error.value = error

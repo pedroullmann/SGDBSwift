@@ -47,6 +47,12 @@
 		E7B527D722B4024200A26C36 /* List.swift in Sources */ = {isa = PBXBuildFile; fileRef = E7B527D622B4024200A26C36 /* List.swift */; };
 		E7BA57302299DC98007C591C /* Networking.swift in Sources */ = {isa = PBXBuildFile; fileRef = E7BA572F2299DC98007C591C /* Networking.swift */; };
 		E7BA57342299FC1E007C591C /* DetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E7BA57332299FC1E007C591C /* DetailViewController.swift */; };
+		E7DF319922BBC28500F96F57 /* Log.swift in Sources */ = {isa = PBXBuildFile; fileRef = E7DF319822BBC28500F96F57 /* Log.swift */; };
+		E7DF319D22BBC63C00F96F57 /* LogsWorker.swift in Sources */ = {isa = PBXBuildFile; fileRef = E7DF319C22BBC63C00F96F57 /* LogsWorker.swift */; };
+		E7DF31A122BBD92F00F96F57 /* LogTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = E7DF31A022BBD92F00F96F57 /* LogTableViewCell.swift */; };
+		E7DF31A322BBF92400F96F57 /* LogViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E7DF31A222BBF92400F96F57 /* LogViewController.swift */; };
+		E7DF31A622BBF99500F96F57 /* LogViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = E7DF31A522BBF99500F96F57 /* LogViewModel.swift */; };
+		E7DF31A822BBF99F00F96F57 /* LogCellViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = E7DF31A722BBF99F00F96F57 /* LogCellViewModel.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -93,6 +99,12 @@
 		E7B527D622B4024200A26C36 /* List.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = List.swift; sourceTree = "<group>"; };
 		E7BA572F2299DC98007C591C /* Networking.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Networking.swift; sourceTree = "<group>"; };
 		E7BA57332299FC1E007C591C /* DetailViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailViewController.swift; sourceTree = "<group>"; };
+		E7DF319822BBC28500F96F57 /* Log.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Log.swift; sourceTree = "<group>"; };
+		E7DF319C22BBC63C00F96F57 /* LogsWorker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LogsWorker.swift; sourceTree = "<group>"; };
+		E7DF31A022BBD92F00F96F57 /* LogTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LogTableViewCell.swift; sourceTree = "<group>"; };
+		E7DF31A222BBF92400F96F57 /* LogViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LogViewController.swift; sourceTree = "<group>"; };
+		E7DF31A522BBF99500F96F57 /* LogViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LogViewModel.swift; sourceTree = "<group>"; };
+		E7DF31A722BBF99F00F96F57 /* LogCellViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LogCellViewModel.swift; sourceTree = "<group>"; };
 		F1419C78E3A5B463D1666B44 /* Pods-SGDBSwift.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-SGDBSwift.release.xcconfig"; path = "Target Support Files/Pods-SGDBSwift/Pods-SGDBSwift.release.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -223,6 +235,7 @@
 			isa = PBXGroup;
 			children = (
 				E74F88282291E21700A578D3 /* Models */,
+				E7DF319A22BBC62200F96F57 /* Logs */,
 				E75D19A0229C9EE70007FFEA /* Database */,
 				E7BA57312299FBFB007C591C /* Detail */,
 				E752BA0E22B69433003F1605 /* Deadlock */,
@@ -251,6 +264,7 @@
 				E74757FF22935A2F00504F87 /* Transacao.swift */,
 				E7B527D622B4024200A26C36 /* List.swift */,
 				E752BA1222B6B294003F1605 /* Deadlock.swift */,
+				E7DF319822BBC28500F96F57 /* Log.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -454,6 +468,50 @@
 			path = Controller;
 			sourceTree = "<group>";
 		};
+		E7DF319A22BBC62200F96F57 /* Logs */ = {
+			isa = PBXGroup;
+			children = (
+				E7DF319E22BBD8D800F96F57 /* Controller */,
+				E7DF31A422BBF97900F96F57 /* ViewModel */,
+				E7DF319F22BBD92300F96F57 /* View */,
+				E7DF319B22BBC62E00F96F57 /* Worker */,
+			);
+			path = Logs;
+			sourceTree = "<group>";
+		};
+		E7DF319B22BBC62E00F96F57 /* Worker */ = {
+			isa = PBXGroup;
+			children = (
+				E7DF319C22BBC63C00F96F57 /* LogsWorker.swift */,
+			);
+			path = Worker;
+			sourceTree = "<group>";
+		};
+		E7DF319E22BBD8D800F96F57 /* Controller */ = {
+			isa = PBXGroup;
+			children = (
+				E7DF31A222BBF92400F96F57 /* LogViewController.swift */,
+			);
+			path = Controller;
+			sourceTree = "<group>";
+		};
+		E7DF319F22BBD92300F96F57 /* View */ = {
+			isa = PBXGroup;
+			children = (
+				E7DF31A022BBD92F00F96F57 /* LogTableViewCell.swift */,
+			);
+			path = View;
+			sourceTree = "<group>";
+		};
+		E7DF31A422BBF97900F96F57 /* ViewModel */ = {
+			isa = PBXGroup;
+			children = (
+				E7DF31A522BBF99500F96F57 /* LogViewModel.swift */,
+				E7DF31A722BBF99F00F96F57 /* LogCellViewModel.swift */,
+			);
+			path = ViewModel;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -551,7 +609,9 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				E7DF319922BBC28500F96F57 /* Log.swift in Sources */,
 				E752BA1322B6B294003F1605 /* Deadlock.swift in Sources */,
+				E7DF319D22BBC63C00F96F57 /* LogsWorker.swift in Sources */,
 				E74F88352291ECD000A578D3 /* ToolsCellViewModel.swift in Sources */,
 				E7BA57342299FC1E007C591C /* DetailViewController.swift in Sources */,
 				E75D19AF229CAECF0007FFEA /* DetailWorker.swift in Sources */,
@@ -560,10 +620,12 @@
 				E788943F2294C72B00847F42 /* TransactionTableViewCell.swift in Sources */,
 				E726D8DF229F543B0056F961 /* Collection.swift in Sources */,
 				E7BA57302299DC98007C591C /* Networking.swift in Sources */,
+				E7DF31A322BBF92400F96F57 /* LogViewController.swift in Sources */,
 				E7B527C922B3EE5900A26C36 /* ListViewController.swift in Sources */,
 				E74F88372291ED4000A578D3 /* HomeWorker.swift in Sources */,
 				E747580822935C0900504F87 /* TransactionsViewController.swift in Sources */,
 				E7B527CC22B3FE6900A26C36 /* ListTableViewCell.swift in Sources */,
+				E7DF31A122BBD92F00F96F57 /* LogTableViewCell.swift in Sources */,
 				E74F882A2291E26700A578D3 /* Ferramenta.swift in Sources */,
 				E75D19A6229CA0080007FFEA /* DatabaseViewModel.swift in Sources */,
 				E74F880E2291CF0200A578D3 /* HomeViewController.swift in Sources */,
@@ -576,8 +638,10 @@
 				E752BA1622B6B40A003F1605 /* DeadlockViewController.swift in Sources */,
 				E74F882F2291EB4C00A578D3 /* DataProvider.swift in Sources */,
 				E7B527D322B3FF6F00A26C36 /* ListCellViewModel.swift in Sources */,
+				E7DF31A822BBF99F00F96F57 /* LogCellViewModel.swift in Sources */,
 				E74F88312291EB7100A578D3 /* Dynamic.swift in Sources */,
 				E7B527D122B3FF5600A26C36 /* ListWorker.swift in Sources */,
+				E7DF31A622BBF99500F96F57 /* LogViewModel.swift in Sources */,
 				E7B527D722B4024200A26C36 /* List.swift in Sources */,
 				E75D19AC229CAE6C0007FFEA /* DetailViewModel.swift in Sources */,
 				E74F880C2291CF0200A578D3 /* AppDelegate.swift in Sources */,
