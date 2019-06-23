@@ -80,13 +80,23 @@ class HomeViewModel {
         guard let index = getIndexOfViewModel(by: ferramenta, blockChanged: true) else { return }
         let indexPath = IndexPath(row: index, section: elementsSection)
         
-        if let element = dataProvider.value.elements[elementsSection][safe: index]?.tool,
-            let id = element.transacao, id == transacaoId {
-            element.bloqueio = .desbloqueado
-            element.transacao = 0
-
-            let cell = ToolsCellViewModel(tool: element, isTransaction: false)
-            dataProvider.value.editingStyle = .reload(cell, indexPath)
+        if let unBloq = ferramenta.bloqueio, unBloq == .compartilhado {
+            if let element = dataProvider.value.elements[elementsSection][safe: index]?.tool {
+                element.bloqueio = .desbloqueado
+                element.transacao = 0
+                
+                let cell = ToolsCellViewModel(tool: element, isTransaction: false)
+                dataProvider.value.editingStyle = .reload(cell, indexPath)
+            }
+        } else {
+            if let element = dataProvider.value.elements[elementsSection][safe: index]?.tool,
+                let id = element.transacao, id == transacaoId {
+                element.bloqueio = .desbloqueado
+                element.transacao = 0
+                
+                let cell = ToolsCellViewModel(tool: element, isTransaction: false)
+                dataProvider.value.editingStyle = .reload(cell, indexPath)
+            }
         }
     }
     
