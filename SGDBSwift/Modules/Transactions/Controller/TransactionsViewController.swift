@@ -97,6 +97,13 @@ class TransactionsViewController: UIViewController {
                 strongSelf.fetchData()
             }
         }
+        
+        viewModel.commitTransaction.bind { [weak self] reloadTransactions in
+            guard let strongSelf = self else { return }
+            if let unDelegate = strongSelf.homeDelegate {
+                unDelegate.reloadTemporary()
+            }
+        }
     }
     
     private func configNavigation() {
@@ -229,6 +236,11 @@ extension TransactionsViewController: TransactionsProtocol {
 
 //MARK :- ListProtocol
 extension TransactionsViewController: ListProtocol {
+    func commitTransaction(transacaoId: Int) {
+        let ids = viewModel.returnRemovedIds(transacaoId: transacaoId)
+        viewModel.setCommit(removedIds: ids, transactionId: transacaoId)
+    }
+    
     func tappedRollback(list: List, transacao: Int) {
         viewModel.rollbackTransaction(transacaoId: transacao)
     }

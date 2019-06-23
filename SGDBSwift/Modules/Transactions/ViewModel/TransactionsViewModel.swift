@@ -16,11 +16,13 @@ class TransactionsViewModel {
     var elementsSection: Int
     var worker: TransactionsWorker
     var rollbackTransaction: Dynamic<Transacao?>
+    var commitTransaction: Dynamic<Transacao?>
     var reloadTransactions: Dynamic<Bool>
     var workerDetail: DetailWorker
     var buttonEnabled: Dynamic<Bool>
     var logWorker: LogsWorker
     var listWorker: ListWorker
+    var commitWorker: CommitWorker
     
     init(worker: TransactionsWorker, ferramentas: [Ferramenta]) {
         self.dataProvider = Dynamic(DataProvider())
@@ -31,10 +33,12 @@ class TransactionsViewModel {
         self.buttonEnabled = Dynamic(true)
         self.reloadTransactions = Dynamic(false)
         self.rollbackTransaction = Dynamic(nil)
+        self.commitTransaction = Dynamic(nil)
         self.workerDetail = DetailWorker()
         self.error = Dynamic(nil)
         self.logWorker = LogsWorker()
         self.listWorker = ListWorker()
+        self.commitWorker = CommitWorker()
     }
     
     func mapToTransactionCellViewModel(_ transactions: [Transacao]) -> [TransactionCellViewModel] {
@@ -122,6 +126,32 @@ class TransactionsViewModel {
             switch result { default: break }
         }
     }
+    
+    func setCommit(removedIds: [Int], transactionId: Int) {
+        commitWorker.setCommit(removedIds: removedIds, transactionId: transactionId) { [weak self] result in
+            guard let strongSelf = self else { return }
+            DispatchQueue.main.async {
+                switch result {
+                case .success(let transaction):
+                    strongSelf.commitTransaction(transaction)
+                    strongSelf.commitTransaction.value = transaction
+                case .error(let error):
+                    strongSelf.error.value = error
+                }
+            }
+        }
+    }
+    
+    func getIndexById(by transacaoId: Int) -> Array<TransactionCellViewModel>.Index? {
+        guard elementsSection < dataProvider.value.elements.count else { return nil }
+        let indexRow = dataProvider.value.elements[elementsSection].firstIndex { (viewModel) -> Bool in
+            if viewModel.transaction.id == transacaoId {
+                return true
+            }
+            return false
+        }
+        return indexRow
+    }
 }
 
 extension TransactionsViewModel: TableViewViewModelProtocol {
@@ -162,6 +192,16 @@ extension TransactionsViewModel: TableViewViewModelProtocol {
                 }
                 strongSelf.buttonEnabled.value = true
             }
+        }
+    }
+    
+    func returnRemovedIds(transacaoId: Int) -> [Int] {
+        guard let index = getIndexById(by: transacaoId) else { return [] }
+        
+        if let element = dataProvider.value.elements[elementsSection][safe: index]?.transaction {
+            return element.removedId
+        } else {
+            return []
         }
     }
     

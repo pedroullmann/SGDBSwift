@@ -14,12 +14,16 @@ class ListViewModel {
     var elementsCount: Int
     var elementsSection: Int
     var worker: ListWorker
+    var logWorker: LogsWorker
+    var commitWorker: CommitWorker
     
     init(worker: ListWorker) {
         self.dataProvider = Dynamic(DataProvider())
         self.elementsCount = 0
         self.elementsSection = 0
         self.worker = worker
+        self.logWorker = LogsWorker()
+        self.commitWorker = CommitWorker()
         self.error = Dynamic(nil)
     }
     
@@ -61,6 +65,12 @@ class ListViewModel {
             return false
         }
         return indexRow
+    }
+    
+    func saveLog(log: Log) {
+        logWorker.createLog(log: log) { result in
+            switch result { default: break }
+        }
     }
 }
 

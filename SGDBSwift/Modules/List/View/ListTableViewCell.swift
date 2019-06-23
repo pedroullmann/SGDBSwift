@@ -10,6 +10,7 @@ import UIKit
 
 protocol ListCellProtocol: class {
     func tappedRollback(list: List, transacao: Int)
+    func tappedCommit(list: List, transacao: Int)
 }
 
 class ListTableViewCell: UITableViewCell {
@@ -33,13 +34,14 @@ class ListTableViewCell: UITableViewCell {
     }
     
     @IBAction func rollback(_ sender: Any) {
-        //TODO: Logs
         if let unDelegate = listCellDelegate {
             unDelegate.tappedRollback(list: viewModel.list, transacao: viewModel.list.transacaoLiberada)
         }
     }
     
     @IBAction func commit(_ sender: Any) {
-        //TODO: Logs
+        if let unDelegate = listCellDelegate {
+            unDelegate.tappedCommit(list: viewModel.list, transacao: viewModel.list.transacaoLiberada)
+        }
     }
 }
