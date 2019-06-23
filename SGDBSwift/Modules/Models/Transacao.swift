@@ -39,6 +39,7 @@ class Transacao: Codable, Equatable {
     var data: String
     var rowSelected: Int?
     var blockedBy: Int?
+    var removedId: [Int]
     
     init(id: Int,
          nome: String,
@@ -46,7 +47,8 @@ class Transacao: Codable, Equatable {
          transacao_estado: EstadoTransacao,
          data: String,
          rowSelected: Int? = nil,
-         blockedBy: Int? = nil) {
+         blockedBy: Int? = nil,
+         removedId: [Int] = []) {
         self.id = id
         self.nome = nome
         self.visao = visao
@@ -54,6 +56,7 @@ class Transacao: Codable, Equatable {
         self.data = data
         self.rowSelected = rowSelected
         self.blockedBy = blockedBy
+        self.removedId = removedId
     }
     
     private enum CodingKeys: String, CodingKey {
@@ -64,6 +67,7 @@ class Transacao: Codable, Equatable {
         case data
         case rowSelected
         case blockedBy
+        case removedId
     }
     
     required init(from decoder: Decoder) throws {
@@ -78,6 +82,12 @@ class Transacao: Codable, Equatable {
             rowSelected = unRowSelected
         } else {
             rowSelected = nil
+        }
+        
+        if let unRemovedId = try? values.decode([Int].self, forKey: .removedId) {
+            removedId = unRemovedId
+        } else {
+            removedId = []
         }
         
         if let unBlockedBy = try? values.decode(Int.self, forKey: .blockedBy) {
@@ -101,6 +111,7 @@ class Transacao: Codable, Equatable {
         try container.encode(transacao_estado, forKey: .transacao_estado)
         try container.encode(rowSelected, forKey: .rowSelected)
         try container.encode(data, forKey: .data)
+        try container.encode(removedId, forKey: .removedId)
         try container.encode(blockedBy, forKey: .blockedBy)
     }
 }

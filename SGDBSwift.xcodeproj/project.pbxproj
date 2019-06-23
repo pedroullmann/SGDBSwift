@@ -10,6 +10,7 @@
 		84EB68B96079CCCB4C816D2F /* libPods-SGDBSwift.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 12F111D0844D88D89811514B /* libPods-SGDBSwift.a */; };
 		E708001122A08EFA006BD912 /* UIView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E708001022A08EFA006BD912 /* UIView.swift */; };
 		E726D8DF229F543B0056F961 /* Collection.swift in Sources */ = {isa = PBXBuildFile; fileRef = E726D8DE229F543B0056F961 /* Collection.swift */; };
+		E733751B22BE7D1800CFD682 /* CommitWorker.swift in Sources */ = {isa = PBXBuildFile; fileRef = E733751A22BE7D1800CFD682 /* CommitWorker.swift */; };
 		E747580022935A2F00504F87 /* Transacao.swift in Sources */ = {isa = PBXBuildFile; fileRef = E74757FF22935A2F00504F87 /* Transacao.swift */; };
 		E747580822935C0900504F87 /* TransactionsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E747580722935C0900504F87 /* TransactionsViewController.swift */; };
 		E747580A22935C8000504F87 /* TransactionsWorker.swift in Sources */ = {isa = PBXBuildFile; fileRef = E747580922935C8000504F87 /* TransactionsWorker.swift */; };
@@ -60,6 +61,7 @@
 		B72E9EFE6AB85DDBCC6FE587 /* Pods-SGDBSwift.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-SGDBSwift.debug.xcconfig"; path = "Target Support Files/Pods-SGDBSwift/Pods-SGDBSwift.debug.xcconfig"; sourceTree = "<group>"; };
 		E708001022A08EFA006BD912 /* UIView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIView.swift; sourceTree = "<group>"; };
 		E726D8DE229F543B0056F961 /* Collection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Collection.swift; sourceTree = "<group>"; };
+		E733751A22BE7D1800CFD682 /* CommitWorker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommitWorker.swift; sourceTree = "<group>"; };
 		E74757FF22935A2F00504F87 /* Transacao.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Transacao.swift; sourceTree = "<group>"; };
 		E747580722935C0900504F87 /* TransactionsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TransactionsViewController.swift; sourceTree = "<group>"; };
 		E747580922935C8000504F87 /* TransactionsWorker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TransactionsWorker.swift; sourceTree = "<group>"; };
@@ -144,6 +146,22 @@
 				E708001022A08EFA006BD912 /* UIView.swift */,
 			);
 			path = Extensions;
+			sourceTree = "<group>";
+		};
+		E733751822BE7CF900CFD682 /* Commit */ = {
+			isa = PBXGroup;
+			children = (
+				E733751922BE7D0500CFD682 /* Worker */,
+			);
+			path = Commit;
+			sourceTree = "<group>";
+		};
+		E733751922BE7D0500CFD682 /* Worker */ = {
+			isa = PBXGroup;
+			children = (
+				E733751A22BE7D1800CFD682 /* CommitWorker.swift */,
+			);
+			path = Worker;
 			sourceTree = "<group>";
 		};
 		E747580222935B9F00504F87 /* Transactions */ = {
@@ -237,6 +255,7 @@
 				E74F88282291E21700A578D3 /* Models */,
 				E7DF319A22BBC62200F96F57 /* Logs */,
 				E75D19A0229C9EE70007FFEA /* Database */,
+				E733751822BE7CF900CFD682 /* Commit */,
 				E7BA57312299FBFB007C591C /* Detail */,
 				E752BA0E22B69433003F1605 /* Deadlock */,
 				E7B527C522B3EE1A00A26C36 /* List */,
@@ -609,6 +628,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				E733751B22BE7D1800CFD682 /* CommitWorker.swift in Sources */,
 				E7DF319922BBC28500F96F57 /* Log.swift in Sources */,
 				E752BA1322B6B294003F1605 /* Deadlock.swift in Sources */,
 				E7DF319D22BBC63C00F96F57 /* LogsWorker.swift in Sources */,

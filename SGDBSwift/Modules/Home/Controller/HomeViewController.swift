@@ -12,6 +12,7 @@ protocol HomeProtocol: class {
     func goBackRowModified(ferramenta: Ferramenta, blockChanged: Bool)
     func verifyBlock(transacaoId: Int, ferramenta: Ferramenta) -> Int?
     func goBackRemoveBlock(transacaoId: Int, ferramenta: Ferramenta)
+    func reloadTemporary()
     func rollbackTransaction(transactionId: Int)
 }
 
@@ -146,6 +147,10 @@ extension HomeViewController: HomeProtocol {
     
     func verifyBlock(transacaoId: Int, ferramenta: Ferramenta) -> Int? {
         return viewModel.verifyBlock(transacaoId: transacaoId, ferramenta: ferramenta)
+    }
+    
+    func reloadTemporary() {
+        viewModel.fetch()
     }
     
     func rollbackTransaction(transactionId: Int) {

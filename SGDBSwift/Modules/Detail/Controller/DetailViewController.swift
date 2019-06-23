@@ -117,6 +117,13 @@ class DetailViewController: UIViewController {
                 let unRollback = rollbackTransacao else { return }
             unDelegate.rollbackTransaction(transacao: unRollback)
         }
+        
+        viewModel.commitTransacao.bind { [weak self] commitTransacao in
+            guard let strongSelf = self,
+                let unDelegate = strongSelf.transactionsDelegate,
+                let unCommit = commitTransacao else { return }
+            unDelegate.commitTransaction(transacao: unCommit)
+        }
     }
     
     private func configBlockedBy() {
@@ -226,6 +233,7 @@ class DetailViewController: UIViewController {
             
             var auxilary = ""
             if let unTool = toolModel {
+                unTransaction.removedId.append(unTool.id)
                 auxilary = "registro \(unTool.descricao) foi removido"
             }
             let log = Log(id: 0, sessao: unTransaction.id, tipo: .remoção, acao: auxilary)
@@ -241,7 +249,12 @@ class DetailViewController: UIViewController {
     }
     
     @IBAction func commit(_ sender: Any) {
-        //TODO: Salvar o commit no log
+        guard let unTransaction = transacao else { return }
+        viewModel.setCommit(removedIds: unTransaction.removedId, transactionId: unTransaction.id)
+        
+        let log = Log(id: 0, sessao: unTransaction.id, tipo: .commit, acao: "-")
+        viewModel.saveLog(log: log)
+        _ = navigationController?.popViewController(animated: true)
     }
     
     @IBAction func rollback(_ sender: Any) {

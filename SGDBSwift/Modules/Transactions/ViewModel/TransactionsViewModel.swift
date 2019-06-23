@@ -70,6 +70,14 @@ class TransactionsViewModel {
         reloadTransactions.value = true
     }
     
+    func commitTransaction(_ transaction: Transacao) {
+        guard let unIndex = getIndexOfViewModel(by: transaction) else { return }
+        let indexPath = IndexPath(row: unIndex, section: elementsSection)
+        let transactionCell = TransactionCellViewModel(transaction: transaction)
+        dataProvider.value.editingStyle = .reload(transactionCell, indexPath)
+        reloadTransactions.value = true
+    }
+    
     func getIndexOfViewModel(by transacao: Transacao) -> Array<TransactionCellViewModel>.Index? {
         guard elementsSection < dataProvider.value.elements.count else { return nil }
         let indexRow = dataProvider.value.elements[elementsSection].firstIndex { (viewModel) -> Bool in

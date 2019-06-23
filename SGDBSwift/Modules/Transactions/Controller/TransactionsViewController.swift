@@ -13,6 +13,7 @@ protocol TransactionsProtocol: class {
     func verifyBlock(transacaoId: Int, ferramenta: Ferramenta) -> Int?
     func goBackRemoveBlock(transacaoId: Int, ferramenta: Ferramenta)
     func rollbackTransaction(transacao: Transacao)
+    func commitTransaction(transacao: Transacao)
     func createBlockList(list: List)
     func goBack(_ indexPath: IndexPath, _ transaction: Transacao)
 }
@@ -204,6 +205,13 @@ extension TransactionsViewController: TransactionsProtocol {
     
     func rollbackTransaction(transacao: Transacao) {
         viewModel.rollbackTransaction(transacao)
+    }
+    
+    func commitTransaction(transacao: Transacao) {
+        if let unDelegate = homeDelegate {
+            unDelegate.reloadTemporary()
+        }
+        viewModel.commitTransaction(transacao)
     }
     
     func createBlockList(list: List) {

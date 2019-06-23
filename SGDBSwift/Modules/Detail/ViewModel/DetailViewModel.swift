@@ -18,6 +18,8 @@ class DetailViewModel {
     var rollbackTransacao: Dynamic<Transacao?>
     var deadlockWorker: DeadlockWorker
     var logWorker: LogsWorker
+    var commitWorker: CommitWorker
+    var commitTransacao: Dynamic<Transacao?>
     var deadlock: Dynamic<Bool>
     
     init(worker: DetailWorker, transacao: Transacao) {
@@ -30,6 +32,8 @@ class DetailViewModel {
         self.transacao = Dynamic(transacao)
         self.deadlockWorker = DeadlockWorker()
         self.logWorker = LogsWorker()
+        self.commitWorker = CommitWorker()
+        self.commitTransacao = Dynamic(nil)
         self.deadlock = Dynamic(false)
     }
     
@@ -108,6 +112,20 @@ class DetailViewModel {
     func saveLog(log: Log) {
         logWorker.createLog(log: log) { result in
             switch result { default: break }
+        }
+    }
+    
+    func setCommit(removedIds: [Int], transactionId: Int) {
+        commitWorker.setCommit(removedIds: removedIds, transactionId: transactionId) { [weak self] result in
+            guard let strongSelf = self else { return }
+            DispatchQueue.main.async {
+                switch result {
+                case .success(let transaction):
+                    strongSelf.commitTransacao.value = transaction
+                case .error(let error):
+                    strongSelf.error.value = error
+                }
+            }
         }
     }
 }
