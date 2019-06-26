@@ -92,6 +92,20 @@ class HomeViewController: UIViewController {
         performSegue(withIdentifier: goToTransacoesIdentifier, sender: ferramentas)
     }
     
+    @IBAction func checkPoint(_ sender: Any) {
+        let alert = UIAlertController(title: "Checkpoint", message: "Você confirma a execução deste checkpoint?", preferredStyle: .alert)
+        
+        let confirmar = UIAlertAction(title: "Confirmo", style: .default, handler: { action in
+            let log = Log(id: 0, sessao: 0, tipo: .checkpoint, acao: "Checkpoint")
+            self.viewModel.checkpoint(log: log)
+        })
+        
+        alert.addAction(confirmar)
+        alert.addAction(UIAlertAction(title: "Cancelar", style: .cancel, handler: nil))
+        
+        self.present(alert, animated: true)
+    }
+    
     // MARK :- Navigation
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         if segue.identifier == goToTransacoesIdentifier,

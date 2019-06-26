@@ -14,6 +14,7 @@ class HomeViewModel {
     var elementsCount: Int
     var worker: HomeWorker
     var elementsSection: Int
+    var logWorker: LogsWorker
     var ferramentas: Dynamic<[Ferramenta]>
     
     init(worker: HomeWorker) {
@@ -22,6 +23,7 @@ class HomeViewModel {
         self.worker = worker
         self.error = Dynamic(nil)
         self.ferramentas = Dynamic([])
+        self.logWorker = LogsWorker()
         self.elementsSection = 0
     }
     
@@ -109,6 +111,16 @@ class HomeViewModel {
         }
         
         dataProvider.value.editingStyle = .reloadAll
+    }
+    
+    func checkpoint(log: Log) {
+        logWorker.createLog(log: log) { result in
+            switch result { default: break }
+        }
+        
+        worker.checkpoint { result in
+            switch result { default: break }
+        }
     }
 }
 

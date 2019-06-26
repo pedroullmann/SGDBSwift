@@ -10,6 +10,7 @@ import Foundation
 
 protocol HomeWorkerProtocol {
     func getBancoTemporario(completion: @escaping (Result<[Ferramenta]>) -> ())
+    func checkpoint(completion: @escaping (Result<Bool>) -> ())
 }
 
 class HomeWorker: HomeWorkerProtocol {
@@ -36,6 +37,21 @@ class HomeWorker: HomeWorkerProtocol {
                 } catch let error {
                     completion(Result.error(error))
                 }
+            case .error(let error):
+                completion(Result.error(error))
+            }
+        }
+    }
+    
+    func checkpoint(completion: @escaping (Result<Bool>) -> ()) {
+        let parameters: [String : Any] = [:]
+        defaultNetworking.request("checkpoint",
+                                  method: .post,
+                                  encoding: .default,
+                                  parameters: parameters) { result in
+            switch result {
+            case .success:
+                completion(Result.success(true))
             case .error(let error):
                 completion(Result.error(error))
             }
