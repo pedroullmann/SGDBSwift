@@ -949,7 +949,7 @@
                                         </tableViewCellContentView>
                                         <color key="backgroundColor" cocoaTouchSystemColor="viewFlipsideBackgroundColor"/>
                                     </tableViewCell>
-                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="none" indentationWidth="10" reuseIdentifier="logCell" rowHeight="50" id="4e8-yD-tUB" userLabel="logCell" customClass="LogTableViewCell" customModule="SGDBSwift" customModuleProvider="target">
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="none" indentationWidth="10" reuseIdentifier="databaseCell" rowHeight="50" id="4e8-yD-tUB" customClass="DatabaseTableViewCell" customModule="SGDBSwift" customModuleProvider="target">
                                         <rect key="frame" x="0.0" y="78" width="414" height="50"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="4e8-yD-tUB" id="fVd-CG-FDz">
@@ -988,8 +988,8 @@
                                         </tableViewCellContentView>
                                         <color key="backgroundColor" white="0.33333333329999998" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                         <connections>
-                                            <outlet property="sessao" destination="ofs-cr-CNL" id="QLE-Jw-MYL"/>
-                                            <outlet property="tipo" destination="Njg-FP-nSf" id="a1M-ko-oNe"/>
+                                            <outlet property="codigo" destination="ofs-cr-CNL" id="vKu-Vt-5lG"/>
+                                            <outlet property="descricao" destination="Njg-FP-nSf" id="Xpc-gU-E5e"/>
                                         </connections>
                                     </tableViewCell>
                                 </prototypes>
@@ -1005,6 +1005,9 @@
                         <viewLayoutGuide key="safeArea" id="yvM-Ap-kTF"/>
                     </view>
                     <navigationItem key="navigationItem" title="Banco físico" id="CwO-KU-YQg"/>
+                    <connections>
+                        <outlet property="tableView" destination="0hZ-yo-TPF" id="XdT-hn-dP2"/>
+                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="I72-lI-kS3" sceneMemberID="firstResponder"/>
             </objects>

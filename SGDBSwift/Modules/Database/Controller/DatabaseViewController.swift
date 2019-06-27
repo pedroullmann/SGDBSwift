@@ -16,7 +16,7 @@ class DatabaseViewController: UIViewController {
     //MARK :- Properties
     private let headerCellIdentifier = "headerCell"
     private let headerCellHeight: CGFloat = 45
-    private let toolsCellIdentifier = "toolsCell"
+    private let databaseCellIdentifier = "databaseCell"
     private let databaseWorker: DatabaseWorker = DatabaseWorker()
     private var viewModel: DatabaseViewModel!
     private var ferramentas: [Ferramenta] = []
@@ -78,7 +78,7 @@ extension DatabaseViewController: UITableViewDataSource {
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cellViewModel = viewModel[indexPath.section][indexPath.row]
 
-        guard let cell = tableView.dequeueReusableCell(withIdentifier: toolsCellIdentifier, for: indexPath) as? ToolsTableViewCell  else {
+        guard let cell = tableView.dequeueReusableCell(withIdentifier: databaseCellIdentifier, for: indexPath) as? DatabaseTableViewCell  else {
             return UITableViewCell()
         }
 

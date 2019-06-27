@@ -48,6 +48,8 @@
 		E7B527D722B4024200A26C36 /* List.swift in Sources */ = {isa = PBXBuildFile; fileRef = E7B527D622B4024200A26C36 /* List.swift */; };
 		E7BA57302299DC98007C591C /* Networking.swift in Sources */ = {isa = PBXBuildFile; fileRef = E7BA572F2299DC98007C591C /* Networking.swift */; };
 		E7BA57342299FC1E007C591C /* DetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E7BA57332299FC1E007C591C /* DetailViewController.swift */; };
+		E7D9AEEF22C44287006FE68B /* DatabaseTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = E7D9AEEE22C44287006FE68B /* DatabaseTableViewCell.swift */; };
+		E7D9AEF122C44313006FE68B /* DatabaseCellViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = E7D9AEF022C44313006FE68B /* DatabaseCellViewModel.swift */; };
 		E7DF319922BBC28500F96F57 /* Log.swift in Sources */ = {isa = PBXBuildFile; fileRef = E7DF319822BBC28500F96F57 /* Log.swift */; };
 		E7DF319D22BBC63C00F96F57 /* LogsWorker.swift in Sources */ = {isa = PBXBuildFile; fileRef = E7DF319C22BBC63C00F96F57 /* LogsWorker.swift */; };
 		E7DF31A122BBD92F00F96F57 /* LogTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = E7DF31A022BBD92F00F96F57 /* LogTableViewCell.swift */; };
@@ -101,6 +103,8 @@
 		E7B527D622B4024200A26C36 /* List.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = List.swift; sourceTree = "<group>"; };
 		E7BA572F2299DC98007C591C /* Networking.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Networking.swift; sourceTree = "<group>"; };
 		E7BA57332299FC1E007C591C /* DetailViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailViewController.swift; sourceTree = "<group>"; };
+		E7D9AEEE22C44287006FE68B /* DatabaseTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DatabaseTableViewCell.swift; sourceTree = "<group>"; };
+		E7D9AEF022C44313006FE68B /* DatabaseCellViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DatabaseCellViewModel.swift; sourceTree = "<group>"; };
 		E7DF319822BBC28500F96F57 /* Log.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Log.swift; sourceTree = "<group>"; };
 		E7DF319C22BBC63C00F96F57 /* LogsWorker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LogsWorker.swift; sourceTree = "<group>"; };
 		E7DF31A022BBD92F00F96F57 /* LogTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LogTableViewCell.swift; sourceTree = "<group>"; };
@@ -378,6 +382,7 @@
 		E75D19A0229C9EE70007FFEA /* Database */ = {
 			isa = PBXGroup;
 			children = (
+				E7D9AEED22C44263006FE68B /* View */,
 				E75D19A1229C9F150007FFEA /* Controller */,
 				E75D19A4229C9FE00007FFEA /* ViewModel */,
 				E75D19A7229CA02C0007FFEA /* Worker */,
@@ -397,6 +402,7 @@
 			isa = PBXGroup;
 			children = (
 				E75D19A5229CA0080007FFEA /* DatabaseViewModel.swift */,
+				E7D9AEF022C44313006FE68B /* DatabaseCellViewModel.swift */,
 			);
 			path = ViewModel;
 			sourceTree = "<group>";
@@ -485,6 +491,14 @@
 				E7BA57332299FC1E007C591C /* DetailViewController.swift */,
 			);
 			path = Controller;
+			sourceTree = "<group>";
+		};
+		E7D9AEED22C44263006FE68B /* View */ = {
+			isa = PBXGroup;
+			children = (
+				E7D9AEEE22C44287006FE68B /* DatabaseTableViewCell.swift */,
+			);
+			path = View;
 			sourceTree = "<group>";
 		};
 		E7DF319A22BBC62200F96F57 /* Logs */ = {
@@ -630,6 +644,7 @@
 			files = (
 				E733751B22BE7D1800CFD682 /* CommitWorker.swift in Sources */,
 				E7DF319922BBC28500F96F57 /* Log.swift in Sources */,
+				E7D9AEEF22C44287006FE68B /* DatabaseTableViewCell.swift in Sources */,
 				E752BA1322B6B294003F1605 /* Deadlock.swift in Sources */,
 				E7DF319D22BBC63C00F96F57 /* LogsWorker.swift in Sources */,
 				E74F88352291ECD000A578D3 /* ToolsCellViewModel.swift in Sources */,
@@ -643,6 +658,7 @@
 				E7DF31A322BBF92400F96F57 /* LogViewController.swift in Sources */,
 				E7B527C922B3EE5900A26C36 /* ListViewController.swift in Sources */,
 				E74F88372291ED4000A578D3 /* HomeWorker.swift in Sources */,
+				E7D9AEF122C44313006FE68B /* DatabaseCellViewModel.swift in Sources */,
 				E747580822935C0900504F87 /* TransactionsViewController.swift in Sources */,
 				E7B527CC22B3FE6900A26C36 /* ListTableViewCell.swift in Sources */,
 				E7DF31A122BBD92F00F96F57 /* LogTableViewCell.swift in Sources */,

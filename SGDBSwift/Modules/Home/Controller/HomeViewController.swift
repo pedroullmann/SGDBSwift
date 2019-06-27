@@ -96,7 +96,7 @@ class HomeViewController: UIViewController {
         let alert = UIAlertController(title: "Checkpoint", message: "Você confirma a execução deste checkpoint?", preferredStyle: .alert)
         
         let confirmar = UIAlertAction(title: "Confirmo", style: .default, handler: { action in
-            let log = Log(id: 0, sessao: 0, tipo: .checkpoint, acao: "Checkpoint")
+            let log = Log(id: 0, sessao: 0, tipo: .checkpoint, acao: "-")
             self.viewModel.checkpoint(log: log)
         })
         

@@ -9,7 +9,7 @@
 import Foundation
 
 class DatabaseViewModel {
-    var dataProvider: Dynamic<DataProvider<ToolsCellViewModel>>
+    var dataProvider: Dynamic<DataProvider<DatabaseCellViewModel>>
     var error: Dynamic<Error?>
     var elementsCount: Int
     var worker: DatabaseWorker
@@ -23,9 +23,9 @@ class DatabaseViewModel {
         self.ferramentas = Dynamic([])
     }
     
-    func mapToToolsCellViewModel(_ ferramentas: [Ferramenta]) -> [ToolsCellViewModel] {
-        let result = ferramentas.map { tool -> ToolsCellViewModel in
-            let toolCellViewModel = ToolsCellViewModel(tool: tool, isTransaction: true)
+    func mapToToolsCellViewModel(_ ferramentas: [Ferramenta]) -> [DatabaseCellViewModel] {
+        let result = ferramentas.map { tool -> DatabaseCellViewModel in
+            let toolCellViewModel = DatabaseCellViewModel(ferramenta: tool)
             return toolCellViewModel
         }
         
@@ -59,15 +59,15 @@ extension DatabaseViewModel: TableViewViewModelProtocol {
         return dataProvider.value.elements.count
     }
     
-    subscript(section: Int) -> [ToolsCellViewModel] {
+    subscript(section: Int) -> [DatabaseCellViewModel] {
         return dataProvider.value.elements[section]
     }
     
-    subscript(section: Int, row: Int) -> ToolsCellViewModel {
+    subscript(section: Int, row: Int) -> DatabaseCellViewModel {
         return dataProvider.value.elements[section][row]
     }
     
-    subscript<R>(section: Int, r: R) -> ArraySlice<ToolsCellViewModel> where R : RangeExpression, Array<ToolsCellViewModel>.Index == R.Bound {
+    subscript<R>(section: Int, r: R) -> ArraySlice<DatabaseCellViewModel> where R : RangeExpression, Array<DatabaseCellViewModel>.Index == R.Bound {
         return dataProvider.value.elements[section][r]
     }
 }
